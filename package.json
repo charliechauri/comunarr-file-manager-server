@@ -1,0 +1,36 @@
+{
+  "name": "comunarr-file-manager-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./app/index.js",
+  "dependencies": {
+    "hapi": "^16.4.3",
+    "mysql": "^2.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charliechauri/comunarr-file-manager-server.git"
+  },
+  "author": "Ariana Hernández",
+  "contributors": [
+    {
+      "name": "Ariana Hernández",
+      "email": "arianahernandezvazquez@gmail.com"
+    },
+    {
+      "name": "Carlos Echauri",
+      "email": "carlos.echauri@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/charliechauri/comunarr-file-manager-server/issues"
+  },
+  "homepage": "https://github.com/charliechauri/comunarr-file-manager-server#readme"
+}
