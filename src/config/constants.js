@@ -9,6 +9,7 @@ module.exports = function () {
     };
 
     const constants = {
+        fileDirectory: './files',
         database: dbContants
     };
 
