@@ -21,7 +21,7 @@
 
 LOCK TABLES `collective` WRITE;
 /*!40000 ALTER TABLE `collective` DISABLE KEYS */;
-INSERT INTO `collective` VALUES (1,'Licenciatura',0),(2,'Bachillerato',1),(3,'Maestria',1),(4,'Repechique',1),(5,'Collectivo prueba SIIII',0),(6,'Arianatl',1);
+INSERT INTO `collective` VALUES (1,'Licenciatura',0),(2,'Bachillerato',1),(3,'Maestria',1),(4,'Repechique',1),(5,'Collectivo prueba SIIII',0),(6,'rootanatl',1);
 /*!40000 ALTER TABLE `collective` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -41,7 +41,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `comunarrProject` WRITE;
 /*!40000 ALTER TABLE `comunarrProject` DISABLE KEYS */;
-INSERT INTO `comunarrProject` VALUES (1,'Programa de aprendizaje',1),(2,'Red de economia solidaria',1),(3,'Red del maiz',1),(10,'prueba',1),(12,'prueba MODIFICADA',0),(13,'Projecto que da error',1);
+INSERT INTO `comunarrProject` VALUES (1,'Programa de aprendizaje',1),(2,'Red de economia solidroota',1),(3,'Red del maiz',1),(10,'prueba',1),(12,'prueba MODIFICADA',0),(13,'Projecto que da error',1);
 /*!40000 ALTER TABLE `comunarrProject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +91,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `keyWord` WRITE;
 /*!40000 ALTER TABLE `keyWord` DISABLE KEYS */;
-INSERT INTO `keyWord` VALUES (1,'sierra'),(2,'educacion'),(3,'raramuri'),(4,'mineria'),(5,'finanzas'),(6,'bosque'),(8,'comunidades'),(9,'solidaridad');
+INSERT INTO `keyWord` VALUES (1,'sierra'),(2,'educacion'),(3,'raramuri'),(4,'mineria'),(5,'finanzas'),(6,'bosque'),(8,'comunidades'),(9,'solidrootdad');
 /*!40000 ALTER TABLE `keyWord` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +141,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Óscar González','Temp1234',1,'ogonzale',1),(2,'ariaa','1111',1,'ariherna',3),(3,'Charli','1234',1,'cechauri',3),(4,'Gerardo','1234',1,'gmora',3);
+INSERT INTO `user` VALUES (1,'Óscar González','Temp1234',1,'ogonzale',1),(2,'rootaa','1111',1,'rootherna',3),(3,'Charli','1234',1,'cechauri',3),(4,'Gerardo','1234',1,'gmora',3);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,7 +161,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `userType` WRITE;
 /*!40000 ALTER TABLE `userType` DISABLE KEYS */;
-INSERT INTO `userType` VALUES (1,'Administrador'),(2,'Miembro de equipo'),(3,'Usuario');
+INSERT INTO `userType` VALUES (1,'Administrador'),(2,'Miembro de equipo'),(3,'Usurooto');
 /*!40000 ALTER TABLE `userType` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +178,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `split_str`(
+CREATE  FUNCTION `split_str`(
   str VARCHAR(1000),
   delimit VARCHAR(12),
   position INT
@@ -201,7 +201,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `userCanAccessTheFile`(
+CREATE  FUNCTION `userCanAccessTheFile`(
 	p_idUser INT,
     p_idFile INT
 ) RETURNS tinyint(1)
@@ -239,7 +239,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `userIsActive`(
+CREATE  FUNCTION `userIsActive`(
 	p_idUser INT
 ) RETURNS tinyint(1)
 BEGIN
@@ -266,7 +266,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `userIsAdmin`(
+CREATE  FUNCTION `userIsAdmin`(
 	p_idUser INT
 ) RETURNS tinyint(1)
 BEGIN
@@ -295,7 +295,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateCollective`(
+CREATE  FUNCTION `validateCollective`(
 	p_id INT,
     p_name VARCHAR(255),
     p_idUser INT
@@ -357,7 +357,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateComunarrProject`(
+CREATE  FUNCTION `validateComunarrProject`(
 	p_id INT,
 	p_name VARCHAR(255),
     p_idUser INT
@@ -407,7 +407,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateContentType`(
+CREATE  FUNCTION `validateContentType`(
 	p_id INT,
 	p_name VARCHAR(255),
     p_idUser INT
@@ -457,7 +457,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateFile`(
+CREATE  FUNCTION `validateFile`(
 	p_id INT,
 	p_name VARCHAR(200),
     p_author VARCHAR(255),
@@ -578,7 +578,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateGeneralTopic`(
+CREATE  FUNCTION `validateGeneralTopic`(
 	p_id INT,
 	p_name VARCHAR(255),
     p_idUser INT
@@ -628,7 +628,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateSpecificTopic`(
+CREATE  FUNCTION `validateSpecificTopic`(
 	p_id INT,
     p_name VARCHAR(255),
     p_idUser INT
@@ -693,7 +693,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateUser`(
+CREATE  FUNCTION `validateUser`(
 	p_id INT,
     p_name VARCHAR(255),
     p_password VARCHAR(255),
@@ -773,7 +773,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` FUNCTION `validateUserPassword`(
+CREATE  FUNCTION `validateUserPassword`(
 	p_id INT,
 	p_password VARCHAR(255),
     p_newPassword VARCHAR(255),
@@ -821,7 +821,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `collective_comunarrProject_select`()
+CREATE  PROCEDURE `collective_comunarrProject_select`()
 BEGIN
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
@@ -850,7 +850,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `collective_insert`(
+CREATE  PROCEDURE `collective_insert`(
 	IN p_name VARCHAR(255),
     IN p_arrayIdComunarrProject VARCHAR(1000),
     IN p_idUser INT
@@ -906,7 +906,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `collective_select`()
+CREATE  PROCEDURE `collective_select`()
 BEGIN
 
   SELECT id, name, status
@@ -928,7 +928,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `collective_update`(
+CREATE  PROCEDURE `collective_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_arrayIdComunarrProject VARCHAR(1000),
@@ -988,7 +988,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `comunarrProject_insert`(
+CREATE  PROCEDURE `comunarrProject_insert`(
 	IN p_name VARCHAR(255),
     IN p_idUser INT
 )
@@ -1030,7 +1030,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `comunarrProject_select`()
+CREATE  PROCEDURE `comunarrProject_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1052,7 +1052,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `comunarrProject_update`(
+CREATE  PROCEDURE `comunarrProject_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status BOOL,
@@ -1098,7 +1098,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `contentType_insert`(
+CREATE  PROCEDURE `contentType_insert`(
 	IN p_name VARCHAR(255),
     IN p_idUser INT
 )
@@ -1140,7 +1140,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `contentType_select`()
+CREATE  PROCEDURE `contentType_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1162,7 +1162,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `contentType_update`(
+CREATE  PROCEDURE `contentType_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status BOOL,
@@ -1208,7 +1208,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `fileType_select`()
+CREATE  PROCEDURE `fileType_select`()
 BEGIN
 
   SELECT id, name
@@ -1230,7 +1230,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `file_delete`(	
+CREATE  PROCEDURE `file_delete`(	
 	IN p_id INT,
     IN p_idUser INT
 )
@@ -1277,7 +1277,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `file_insert`(
+CREATE  PROCEDURE `file_insert`(
 	IN p_name VARCHAR(200),
     IN p_author VARCHAR(255),
     IN p_place VARCHAR(255),
@@ -1366,7 +1366,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `file_select`(
+CREATE  PROCEDURE `file_select`(
 	IN p_id INT,
     IN p_idUser INT
 )
@@ -1418,7 +1418,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `file_selectSimpleSearch`(
+CREATE  PROCEDURE `file_selectSimpleSearch`(
 	IN p_name VARCHAR(255),
     IN p_author VARCHAR(255),
     IN p_idComunarrProject INT,
@@ -1510,7 +1510,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `file_update`(
+CREATE  PROCEDURE `file_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(200),
     IN p_author VARCHAR(255),
@@ -1609,7 +1609,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `generalTopic_insert`(
+CREATE  PROCEDURE `generalTopic_insert`(
 	IN p_name VARCHAR(255),
     IN p_idUser INT
 )
@@ -1651,7 +1651,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `generalTopic_select`()
+CREATE  PROCEDURE `generalTopic_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1673,7 +1673,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `generalTopic_update`(
+CREATE  PROCEDURE `generalTopic_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status BOOL,
@@ -1719,7 +1719,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `keyWord_insert`(
+CREATE  PROCEDURE `keyWord_insert`(
 	IN p_idFile INT,
     IN p_arrayKeyWords VARCHAR(1000)
 )
@@ -1788,7 +1788,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `keyWord_select`()
+CREATE  PROCEDURE `keyWord_select`()
 BEGIN
 
   SELECT id, name
@@ -1810,7 +1810,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `privacyType_select`()
+CREATE  PROCEDURE `privacyType_select`()
 BEGIN
 
   SELECT id, name
@@ -1832,7 +1832,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `saveKeyWords`(
+CREATE  PROCEDURE `saveKeyWords`(
 	IN p_idFile INT,
     IN p_arrayKeyWords VARCHAR(1000)
 )
@@ -1901,7 +1901,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `specificTopic_generalTopic_select`()
+CREATE  PROCEDURE `specificTopic_generalTopic_select`()
 BEGIN
 
   SELECT idSpecificTopic, idGeneralTopic
@@ -1923,7 +1923,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `specificTopic_insert`(
+CREATE  PROCEDURE `specificTopic_insert`(
 	IN p_name VARCHAR(255),
     IN p_arrayIdGeneralTopic VARCHAR(1000),
     IN p_idUser INT
@@ -1977,7 +1977,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `specificTopic_select`()
+CREATE  PROCEDURE `specificTopic_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1999,7 +1999,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `specificTopic_update`(
+CREATE  PROCEDURE `specificTopic_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_arrayIdGeneralTopic VARCHAR(1000),
@@ -2059,7 +2059,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `splitArray`(
+CREATE  PROCEDURE `splitArray`(
 	IN array VARCHAR(1000)
 )
 BEGIN
@@ -2110,7 +2110,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `splitStringArray`(
+CREATE  PROCEDURE `splitStringArray`(
 	IN array VARCHAR(1000)
 )
 BEGIN
@@ -2160,7 +2160,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ozkrpp`@`%` PROCEDURE `user_authenticate`(IN userName CHAR(255), IN password CHAR(255))
+CREATE  PROCEDURE `user_authenticate`(IN userName CHAR(255), IN password CHAR(255))
 BEGIN    
 	DECLARE idUser INT;
 
@@ -2190,7 +2190,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `user_insert`(
+CREATE  PROCEDURE `user_insert`(
 	IN p_name VARCHAR(255),
     IN p_password VARCHAR(255),
     IN p_userName VARCHAR(255),
@@ -2236,7 +2236,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `user_select`()
+CREATE  PROCEDURE `user_select`()
 BEGIN
 
 	SELECT id, name, status, userName, idUserType
@@ -2258,7 +2258,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `user_update`(
+CREATE  PROCEDURE `user_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status TINYINT(1),
@@ -2309,7 +2309,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`ari`@`%` PROCEDURE `user_updatePassword`(
+CREATE  PROCEDURE `user_updatePassword`(
 	IN p_id INT,
 	IN p_password VARCHAR(255),
     IN p_newPassword VARCHAR(255),
