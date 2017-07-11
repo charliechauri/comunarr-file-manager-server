@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `comunarr` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `comunarr`;
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
 -- Host: 35.184.224.0    Database: comunarr
@@ -16,154 +18,265 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `collective`
+-- Table structure for table `collective`
 --
 
-LOCK TABLES `collective` WRITE;
-/*!40000 ALTER TABLE `collective` DISABLE KEYS */;
-INSERT INTO `collective` VALUES (1,'Licenciatura',0),(2,'Bachillerato',1),(3,'Maestria',1),(4,'Repechique',1),(5,'Collectivo prueba SIIII',0),(6,'Arianatl',1);
-/*!40000 ALTER TABLE `collective` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `collective`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `collective` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `collective_comunarrProject`
+-- Table structure for table `collective_comunarrProject`
 --
 
-LOCK TABLES `collective_comunarrProject` WRITE;
-/*!40000 ALTER TABLE `collective_comunarrProject` DISABLE KEYS */;
-INSERT INTO `collective_comunarrProject` VALUES (5,2),(3,1),(3,2),(6,1),(6,2),(6,3);
-/*!40000 ALTER TABLE `collective_comunarrProject` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `collective_comunarrProject`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `collective_comunarrProject` (
+  `idCollective` int(11) NOT NULL,
+  `idComunarrProject` int(11) NOT NULL,
+  KEY `idCollective_idx` (`idCollective`),
+  KEY `idComunarrProject_idx` (`idComunarrProject`),
+  CONSTRAINT `collective` FOREIGN KEY (`idCollective`) REFERENCES `collective` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `comunarrProject` FOREIGN KEY (`idComunarrProject`) REFERENCES `comunarrProject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comunarrProject`
+-- Table structure for table `comunarrProject`
 --
 
-LOCK TABLES `comunarrProject` WRITE;
-/*!40000 ALTER TABLE `comunarrProject` DISABLE KEYS */;
-INSERT INTO `comunarrProject` VALUES (1,'Programa de aprendizaje',1),(2,'Red de economia solidaria',1),(3,'Red del maiz',1),(10,'prueba',1),(12,'prueba MODIFICADA',0),(13,'Projecto que da error',1);
-/*!40000 ALTER TABLE `comunarrProject` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `comunarrProject`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comunarrProject` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '1',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contentType`
+-- Table structure for table `contentType`
 --
 
-LOCK TABLES `contentType` WRITE;
-/*!40000 ALTER TABLE `contentType` DISABLE KEYS */;
-INSERT INTO `contentType` VALUES (1,'Relatoria',0),(2,'Registro',1),(3,'Contenido de prueba MODIFICADO',0),(4,'Video',1);
-/*!40000 ALTER TABLE `contentType` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `contentType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contentType` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `file`
+-- Table structure for table `file`
 --
 
-LOCK TABLES `file` WRITE;
-/*!40000 ALTER TABLE `file` DISABLE KEYS */;
-INSERT INTO `file` VALUES (4,'Archivo 1','ITESO','Jalisco',NULL,3,2,1,7,1,2,2,'2017-07-05 00:00:00',2,'2017-07-05 01:53:57'),(5,'PROFECTAR 2017','SINE','Creel',NULL,3,2,1,7,2,2,2,'2017-07-10 00:00:00',2,'2017-07-10 06:09:40');
-/*!40000 ALTER TABLE `file` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `file` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `place` varchar(255) DEFAULT NULL,
+  `relatedDate` date DEFAULT NULL,
+  `idCollective` int(11) NOT NULL,
+  `idComunarrProject` int(11) NOT NULL,
+  `idGeneralTopic` int(11) NOT NULL,
+  `idSpecificTopic` int(11) DEFAULT NULL,
+  `idPrivacyType` int(11) NOT NULL,
+  `idContentType` int(11) NOT NULL,
+  `idFileType` int(11) NOT NULL,
+  `updateDate` datetime NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `timestamp` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idCollective_idx` (`idCollective`),
+  KEY `idComunarrProject_idx` (`idComunarrProject`),
+  KEY `idGeneralTopic_idx` (`idGeneralTopic`),
+  KEY `idSpecificTopic_idx` (`idSpecificTopic`),
+  KEY `idPrivacyType_idx` (`idPrivacyType`),
+  KEY `idContentType_idx` (`idContentType`),
+  KEY `idFileType_idx` (`idFileType`),
+  KEY `idUser_idx` (`idUser`),
+  CONSTRAINT `idCollective` FOREIGN KEY (`idCollective`) REFERENCES `collective` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idComunarrProject` FOREIGN KEY (`idComunarrProject`) REFERENCES `comunarrProject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idContentType` FOREIGN KEY (`idContentType`) REFERENCES `contentType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idFileType` FOREIGN KEY (`idFileType`) REFERENCES `fileType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idGeneralTopic` FOREIGN KEY (`idGeneralTopic`) REFERENCES `generalTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idPrivacyType` FOREIGN KEY (`idPrivacyType`) REFERENCES `privacyType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idSpecificTopic` FOREIGN KEY (`idSpecificTopic`) REFERENCES `specificTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idUser` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `fileType`
+-- Table structure for table `fileType`
 --
 
-LOCK TABLES `fileType` WRITE;
-/*!40000 ALTER TABLE `fileType` DISABLE KEYS */;
-INSERT INTO `fileType` VALUES (1,'PDF'),(2,'PPT');
-/*!40000 ALTER TABLE `fileType` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `fileType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fileType` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `generalTopic`
+-- Table structure for table `generalTopic`
 --
 
-LOCK TABLES `generalTopic` WRITE;
-/*!40000 ALTER TABLE `generalTopic` DISABLE KEYS */;
-INSERT INTO `generalTopic` VALUES (1,'Educacion',1),(2,'Gestion del conocimiento',0),(3,'Defensa del bosque',1);
-/*!40000 ALTER TABLE `generalTopic` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `generalTopic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `generalTopic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `keyWord`
+-- Table structure for table `keyWord`
 --
 
-LOCK TABLES `keyWord` WRITE;
-/*!40000 ALTER TABLE `keyWord` DISABLE KEYS */;
-INSERT INTO `keyWord` VALUES (1,'sierra'),(2,'educacion'),(3,'raramuri'),(4,'mineria'),(5,'finanzas'),(6,'bosque'),(8,'comunidades'),(9,'solidaridad');
-/*!40000 ALTER TABLE `keyWord` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `keyWord`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `keyWord` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `keyWord_file`
+-- Table structure for table `keyWord_file`
 --
 
-LOCK TABLES `keyWord_file` WRITE;
-/*!40000 ALTER TABLE `keyWord_file` DISABLE KEYS */;
-INSERT INTO `keyWord_file` VALUES (8,4),(9,4);
-/*!40000 ALTER TABLE `keyWord_file` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `keyWord_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `keyWord_file` (
+  `idKeyWord` int(11) NOT NULL,
+  `idFile` int(11) NOT NULL,
+  KEY `idKeyWord_idx` (`idKeyWord`),
+  KEY `idFile_idx` (`idFile`),
+  CONSTRAINT `idFile` FOREIGN KEY (`idFile`) REFERENCES `file` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `idKeyWord` FOREIGN KEY (`idKeyWord`) REFERENCES `keyWord` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `privacyType`
+-- Table structure for table `privacyType`
 --
 
-LOCK TABLES `privacyType` WRITE;
-/*!40000 ALTER TABLE `privacyType` DISABLE KEYS */;
-INSERT INTO `privacyType` VALUES (1,'Sólo yo'),(2,'Miembros del equipo'),(3,'Todos');
-/*!40000 ALTER TABLE `privacyType` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `privacyType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `privacyType` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `specificTopic`
+-- Table structure for table `specificTopic`
 --
 
-LOCK TABLES `specificTopic` WRITE;
-/*!40000 ALTER TABLE `specificTopic` DISABLE KEYS */;
-INSERT INTO `specificTopic` VALUES (1,'Explotacion de bosques',0),(3,'Cuidado del bosque',1),(6,'Autonomia',0),(7,'Tareas',1);
-/*!40000 ALTER TABLE `specificTopic` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `specificTopic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `specificTopic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `specificTopic_generalTopic`
+-- Table structure for table `specificTopic_generalTopic`
 --
 
-LOCK TABLES `specificTopic_generalTopic` WRITE;
-/*!40000 ALTER TABLE `specificTopic_generalTopic` DISABLE KEYS */;
-INSERT INTO `specificTopic_generalTopic` VALUES (6,1),(3,3),(7,1),(7,2);
-/*!40000 ALTER TABLE `specificTopic_generalTopic` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `specificTopic_generalTopic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `specificTopic_generalTopic` (
+  `idSpecificTopic` int(11) NOT NULL,
+  `idGeneralTopic` int(11) NOT NULL,
+  KEY `specificTopic_idx` (`idSpecificTopic`),
+  KEY `generalTopic_idx` (`idGeneralTopic`),
+  CONSTRAINT `generalTopic` FOREIGN KEY (`idGeneralTopic`) REFERENCES `generalTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `specificTopic` FOREIGN KEY (`idSpecificTopic`) REFERENCES `specificTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Table structure for table `user`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Óscar González','Temp1234',1,'ogonzale',1),(2,'ariaa','1111',1,'ariherna',3),(3,'Charli','1234',1,'cechauri',3),(4,'Gerardo','1234',1,'gmora',3);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `userName` varchar(255) NOT NULL,
+  `idUserType` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_userType_idx` (`idUserType`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `userToken`
+-- Table structure for table `userToken`
 --
 
-LOCK TABLES `userToken` WRITE;
-/*!40000 ALTER TABLE `userToken` DISABLE KEYS */;
-INSERT INTO `userToken` VALUES (1,'5qge0f8od68eug1jfurd55tuae','2017-06-20 22:54');
-/*!40000 ALTER TABLE `userToken` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `userToken`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `userToken` (
+  `idUser` int(11) NOT NULL,
+  `token` varchar(32) NOT NULL,
+  `expirationDate` varchar(32) NOT NULL,
+  PRIMARY KEY (`idUser`),
+  UNIQUE KEY `idUser_UNIQUE` (`idUser`),
+  CONSTRAINT `userToken_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `userType`
+-- Table structure for table `userType`
 --
 
-LOCK TABLES `userType` WRITE;
-/*!40000 ALTER TABLE `userType` DISABLE KEYS */;
-INSERT INTO `userType` VALUES (1,'Administrador'),(2,'Miembro de equipo'),(3,'Usuario');
-/*!40000 ALTER TABLE `userType` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `userType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `userType` (
+  `Id` int(11) NOT NULL,
+  `Nombre` varchar(255) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping routines for database 'comunarr'
@@ -2354,4 +2467,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-10 18:35:25
+-- Dump completed on 2017-07-10 19:12:11
