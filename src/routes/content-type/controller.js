@@ -5,23 +5,24 @@ const db = require(`${global.__base}/src/middleware/db`);
 module.exports = {
     GET: (request, reply) => {
         db.getConnection((err, connection) => {
-            connection.query('CALL comunarrProject_select', {}, (error, results, fields) => {
+            connection.query('CALL contentType_select', {}, (error, results, fields) => {
                 connection.release();
-                
+
                 if (error) throw error;
 
                 reply(results[0]);
+                
             });
         });
     },
 
     POST: (request, reply) => {
-        let comunarrProject = request.payload;
+        let contentType = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL comunarrProject_insert(?, ?)', [comunarrProject.name, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL contentType_insert(?, ?)', [contentType.name, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
-                
+
                 if (error) throw error;
 
                 reply(results[0]);
@@ -30,13 +31,13 @@ module.exports = {
     },
 
     PUT: (request, reply) => {
-        let comunarrProject = request.payload;
+        let contentType = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL comunarrProject_update(?, ?, ?, ?, ?)', [comunarrProject.id, comunarrProject.name, comunarrProject.status, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL contentType_update(?, ?, ?, ?, ?)', [contentType.id, contentType.name, contentType.status, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
-                
-                if (error) throw error;
+
+                 if (error) throw error;
 
                 reply(results[0]);
             });

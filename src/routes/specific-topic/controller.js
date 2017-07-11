@@ -5,7 +5,7 @@ const db = require(`${global.__base}/src/middleware/db`);
 module.exports = {
     GET: (request, reply) => {
         db.getConnection((err, connection) => {
-            connection.query('CALL collective_select', {}, (error, results, fields) => {
+            connection.query('CALL specificTopic_select', {}, (error, results, fields) => {
                 connection.release();
 
                 if (error) throw error;
@@ -16,12 +16,12 @@ module.exports = {
     },
 
     POST: (request, reply) => {
-        let collective = request.payload;
+        let specificTopic = request.payload;
 
-        collective.comunarrProject = collective.comunarrProject.join(',');
+        specificTopic.generalTopic = specificTopic.generalTopic.join(',');
 
         db.getConnection((err, connection) => {
-            connection.query('CALL collective_insert(?, ?, ?)', [collective.name, collective.comunarrProject, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL specificTopic_insert(?, ?, ?)', [specificTopic.name, specificTopic.generalTopic, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
                 
                 if (error) throw error;
@@ -32,12 +32,12 @@ module.exports = {
     },
 
     PUT: (request, reply) => {
-        let collective = request.payload;
+        let specificTopic = request.payload;
 
-        collective.comunarrProject = collective.comunarrProject.join(',');
+        specificTopic.generalTopic = specificTopic.generalTopic.join(',');
 
         db.getConnection((err, connection) => {
-            connection.query('CALL collective_update(?, ?, ?, ?, ?)', [collective.id, collective.name, collective.comunarrProject, collective.status, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL specificTopic_update(?, ?, ?, ?, ?)', [specificTopic.id, specificTopic.name, specificTopic.generalTopic, specificTopic.status, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
                 
                 if (error) throw error;
