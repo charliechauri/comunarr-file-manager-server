@@ -7,7 +7,11 @@ module.exports = {
         db.getConnection((err, connection) => {
             connection.query('CALL comunarrProject_select', {}, (error, results, fields) => {
                 connection.release();
+
+                if (error) throw error;
+
                 reply(results);
+                
             });
         });
     },
@@ -18,9 +22,10 @@ module.exports = {
         db.getConnection((err, connection) => {
             connection.query('CALL comunarrProject_insert(?, ?)', [comunarrProject.name, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
-                reply(results);
-                // Handle error after the release.
+
                 if (error) throw error;
+
+                reply(results);
             });
         });
     },
@@ -31,9 +36,10 @@ module.exports = {
         db.getConnection((err, connection) => {
             connection.query('CALL comunarrProject_update(?, ?, ?, ?, ?)', [comunarrProject.id, comunarrProject.name, comunarrProject.status, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
+
+                 if (error) throw error;
+
                 reply(results);
-                // Handle error after the release.
-                if (error) throw error;
             });
         });
     }
