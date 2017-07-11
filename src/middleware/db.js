@@ -8,6 +8,8 @@ module.exports = function () {
     return {
         getConnection: callback => {
             pool.getConnection((err, connection) => {
+                if (err) throw err;
+                
                 callback(err, connection);
             });
         }
