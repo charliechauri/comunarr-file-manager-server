@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "hapi": "^16.4.3",
+    "joi": "^10.6.0",
     "mysql": "^2.13.0"
   },
   "devDependencies": {
