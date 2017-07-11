@@ -11,6 +11,7 @@
             "program": "${workspaceRoot}/index.js",
             "env": {
                 "NODE_ENV": "development",
+                "CORS_ENV": "TRUE",
                 "DATABASE_HOST": "127.0.0.1",
                 "DATABASE_USER": "root",
                 "DATABASE_PASSWORD": "oquesugieres",
