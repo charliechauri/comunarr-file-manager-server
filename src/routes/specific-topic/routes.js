@@ -1,5 +1,5 @@
 const SpecificTopicController = require(`${global.__base}/src/routes/specific-topic/controller`);
-const BASE_PATH = '/specificTopic';
+const BASE_PATH = '/specific-topic';
 
 module.exports = (() => {
     return [

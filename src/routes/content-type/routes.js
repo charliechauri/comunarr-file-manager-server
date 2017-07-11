@@ -1,5 +1,5 @@
 const ContentTypeController = require(`${global.__base}/src/routes/content-type/controller`);
-const BASE_PATH = '/contentType';
+const BASE_PATH = '/content-type';
 
 module.exports = [
     {

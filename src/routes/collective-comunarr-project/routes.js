@@ -1,5 +1,5 @@
 const CollectiveComunarrProjectController = require(`${global.__base}/src/routes/collective-comunarr-project/controller`);
-const BASE_PATH = '/collectiveComunarrProject';
+const BASE_PATH = '/collective-comunarr-project';
 
 module.exports = (() => {
     return [
