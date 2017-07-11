@@ -1,5 +1,7 @@
 # comunarr-file-manager-server
 
+![Comunarr](https://static.wixstatic.com/media/338ed6_82a0ae1e055844fdb83495390e31c58c.jpg/v1/fill/w_320,h_192,al_c,q_80,usm_0.66_1.00_0.01/338ed6_82a0ae1e055844fdb83495390e31c58c.webp "Comunarr logo")
+
 Rest API for comunarr file manager
 
 ## Getting Started
