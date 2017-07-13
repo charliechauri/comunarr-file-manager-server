@@ -7,6 +7,7 @@ const specificTopicGeneralTopicRoutes = require(`${global.__base}/src/routes/spe
 const contentTypeRoutes = require(`${global.__base}/src/routes/content-type/routes`);
 const fileTypeRoutes = require(`${global.__base}/src/routes/file-type/routes`);
 const keyWordRoutes = require(`${global.__base}/src/routes/key-word/routes`);
+const userRoutes = require(`${global.__base}/src/routes/user/routes`);
 
 let routes = [];
 
@@ -19,5 +20,6 @@ routes = routes.concat(specificTopicGeneralTopicRoutes);
 routes = routes.concat(contentTypeRoutes);
 routes = routes.concat(fileTypeRoutes);
 routes = routes.concat(keyWordRoutes);
+routes = routes.concat(userRoutes);
 
 module.exports = routes;

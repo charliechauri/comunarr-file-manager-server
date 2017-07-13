@@ -35,17 +35,7 @@ npm start
 * Validate access to routes by user role - @charliechauri
 * Catalogs
   * Validations - @charliechauri
-  * Collective Comunarr Project - @ariherna
-  * Specific topic - @ariherna
-  * General topic - @ariherna
-  * Specific topic general topic - @ariherna
-  * Content type - @ariherna
-  * File type - @ariherna
-  * User - @ariherna
-  * User type - @ariherna
-  * Privacy type - @ariherna
   * Change password - @charliechauri
-  * Keyword - @ariherna
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework

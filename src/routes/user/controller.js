@@ -5,7 +5,7 @@ const db = require(`${global.__base}/src/middleware/db`);
 module.exports = {
     GET: (request, reply) => {
         db.getConnection((err, connection) => {
-            connection.query('CALL generalTopic_select', {}, (error, results, fields) => {
+            connection.query('CALL user_select', {}, (error, results, fields) => {
                 connection.release();
 
                 if (error) throw error;
@@ -16,10 +16,10 @@ module.exports = {
     },
 
     POST: (request, reply) => {
-        let generalTopic = request.payload;
+        let user = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL generalTopic_insert(?, ?)', [generalTopic.name, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL user_insert(?, ?, ?, ?, ?)', [user.name, user.password, user.userName, user.idUserType, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
 
                 if (error) throw error;
@@ -30,10 +30,10 @@ module.exports = {
     },
 
     PUT: (request, reply) => {
-        let generalTopic = request.payload;
+        let user = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL generalTopic_update(?, ?, ?, ?, ?)', [generalTopic.id, generalTopic.name, generalTopic.status, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL user_update(?, ?, ?, ?, ?, ?)', [user.id, user.name, user.status, user.userName, user.idUserType, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
 
                  if (error) throw error;
