@@ -36,6 +36,7 @@ npm start
 * Catalogs
   * Validations - @charliechauri
   * Change password - @charliechauri
+* Return the updated/inserted object - @ariherna
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
