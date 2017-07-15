@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const UserController = require(`${global.__base}/src/routes/user/controller`);
 const BASE_PATH = '/user';
 
@@ -13,14 +14,32 @@ module.exports = [
         method: 'POST',
         path: BASE_PATH,
         config: {
-            handler: UserController.POST
+            handler: UserController.POST,
+            validate: {
+                payload: {
+                    name: Joi.string().min(4).max(255),
+                    userName: Joi.string().min(4).max(255),
+                    type: Joi.number().min(1).max(3),
+                    password: Joi.string().min(4).max(255),
+                    confirmPassword: Joi.string().min(4).max(255)
+                }
+            }
         }
     },
     {
         method: 'PUT',
         path: BASE_PATH,
         config: {
-            handler: UserController.PUT
+            handler: UserController.PUT,
+            validate: {
+                payload: {
+                    id: Joi.number().min(1).max(1000000),
+                    name: Joi.string().min(4).max(255),
+                    userName: Joi.string().min(4).max(255),
+                    type: Joi.number().min(1).max(3),
+                    status: Joi.boolean()
+                }
+            }
         }
     }
 ];

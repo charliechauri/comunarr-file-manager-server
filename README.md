@@ -34,7 +34,6 @@ npm start
 * Simple search - @ariherna
 * Validate access to routes by user role - @charliechauri
 * Catalogs
-  * Validations - @charliechauri
   * Change password - @charliechauri
 * Return the updated/inserted object - @ariherna
 
