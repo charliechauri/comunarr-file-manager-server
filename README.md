@@ -31,11 +31,12 @@ npm start
 * Download file - @charliechauri
 * Specific search - @ariherna
   * Date filters (1900-01-01 = undefined date)
-* Simple search - @ariherna
-* Validate access to routes by user role - @charliechauri
+* Validate access to routes by user role - @charliechauri 
+  * Use unauthorized status
 * Catalogs
   * Change password - @charliechauri
 * Return the updated/inserted object - @ariherna
+* Delete files 
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
