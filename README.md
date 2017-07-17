@@ -29,14 +29,13 @@ npm start
   * Extension always must be in minus
   * Files should not be .exe
 * Download file - @charliechauri
-* Specific search - @ariherna
-  * Date filters (1900-01-01 = undefined date)
 * Validate access to routes by user role - @charliechauri 
   * Use unauthorized status
 * Catalogs
   * Change password - @charliechauri
-* Return the updated/inserted object - @ariherna
-* Delete files 
+* Delete files - @charliechauri
+* Specific search - @ariherna
+  * Date filters (1900-01-01 = undefined date)
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
