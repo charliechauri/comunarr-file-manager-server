@@ -1,3 +1,5 @@
 {
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "workbench.colorTheme": "Material Theme Palenight",
+    "workbench.iconTheme": "material-icon-theme"
 }
