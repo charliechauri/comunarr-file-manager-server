@@ -1,5 +1,6 @@
 {
     "editor.wordWrap": "on",
     "workbench.colorTheme": "Material Theme Palenight",
-    "workbench.iconTheme": "material-icon-theme"
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontFamily": "Monaco, 'Courier New', monospace"
 }
