@@ -18,10 +18,17 @@ module.exports = (() => {
             }
         },
         {
-            method: 'put',
+            method: 'PUT',
             path: BASE_PATH,
             config: {
                 handler: FileController.PUT
+            }
+        },
+        {
+            method: 'DELETE',
+            path: BASE_PATH.concat('/{id}'),
+            config: {
+                handler: FileController.DELETE
             }
         }
     ];

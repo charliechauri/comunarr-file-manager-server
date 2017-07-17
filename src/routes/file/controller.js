@@ -84,5 +84,25 @@ module.exports = {
 
             });
         });
+    },
+
+    DELETE: (request, reply) => {
+        let id = encodeURIComponent(request.params.id)
+
+        db.getConnection((err, connection) => {
+            connection.query('CALL file_delete(?, ?)', [id, 1], (error, results, fields) => { // @todo define user ID
+                connection.release();
+
+                if (error) throw error;
+
+                if (results[0][0].SUCCESS === 0) {
+                    reply(statusMessage.BAD_REQUEST);
+                }
+                else {
+                    reply(results[0][0]);
+                }
+
+            });
+        });
     }
 };
