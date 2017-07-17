@@ -19,7 +19,7 @@ module.exports = (() => {
                 validate: {
                     payload: {
                         name: Joi.string().min(4).max(255),
-                        idGeneralTopic: Joi.number().min(1).max(1000000)
+                        idGeneralTopic: Joi.array().items(Joi.number().min(1).max(10000)).required()
                     }
                 }
             }
@@ -33,7 +33,7 @@ module.exports = (() => {
                     payload: {
                         id: Joi.number().min(1).max(1000000),
                         name: Joi.string().min(4).max(255),
-                        idGeneralTopic: Joi.number().min(1).max(1000000),
+                        idGeneralTopic: Joi.array().items(Joi.number().min(1).max(10000)).required(),
                         status: Joi.boolean()
                     }
                 }

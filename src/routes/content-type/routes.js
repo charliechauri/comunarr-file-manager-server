@@ -30,7 +30,8 @@ module.exports = [
             validate: {
                 payload: {
                     id: Joi.number().min(1).max(100000),
-                    name: Joi.string().min(4).max(255)
+                    name: Joi.string().min(4).max(255),
+                    status: Joi.boolean()
                 }
             }
         }

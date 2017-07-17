@@ -19,7 +19,7 @@ module.exports = [
                 payload: {
                     name: Joi.string().min(4).max(255),
                     userName: Joi.string().min(4).max(255),
-                    type: Joi.number().min(1).max(3),
+                    idUserType: Joi.number().min(1).max(3),
                     password: Joi.string().min(4).max(255),
                     confirmPassword: Joi.string().min(4).max(255)
                 }
@@ -36,7 +36,7 @@ module.exports = [
                     id: Joi.number().min(1).max(1000000),
                     name: Joi.string().min(4).max(255),
                     userName: Joi.string().min(4).max(255),
-                    type: Joi.number().min(1).max(3),
+                    idUserType: Joi.number().min(1).max(3),
                     status: Joi.boolean()
                 }
             }
