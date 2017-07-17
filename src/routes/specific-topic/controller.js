@@ -1,6 +1,7 @@
 'use strict';
 
 const db = require(`${global.__base}/src/middleware/db`);
+const statusMessage = require(`${global.__base}/src/utils/request-status-message`);
 
 module.exports = {
     GET: (request, reply) => {
@@ -10,7 +11,9 @@ module.exports = {
 
                 if (error) throw error;
 
-                reply(results[0]);
+                if (results.fieldCount === 0) { reply(statusMessage.NOT_FOUND); }
+                else { reply(results[0]); }
+                    
             });
         });
     },
@@ -18,15 +21,24 @@ module.exports = {
     POST: (request, reply) => {
         let specificTopic = request.payload;
 
-        specificTopic.generalTopic = specificTopic.generalTopic.join(',');
+        specificTopic.idGeneralTopic = specificTopic.idGeneralTopic.join(',');
 
         db.getConnection((err, connection) => {
-            connection.query('CALL specificTopic_insert(?, ?, ?)', [specificTopic.name, specificTopic.generalTopic, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL specificTopic_insert(?, ?, ?)', [specificTopic.name, specificTopic.idGeneralTopic, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
                 
                 if (error) throw error;
 
-                reply(results[0]);
+                if (results[0][0].SUCCESS === 0) {
+                    reply(statusMessage.BAD_REQUEST);
+                }
+                else {
+                    let resultSpecificTopic = results[0][0];
+                    resultSpecificTopic.idGeneralTopic = results[1].map(item => item.idGeneralTopic);
+
+                    reply(resultSpecificTopic);
+                }
+
             });
         });
     },
@@ -34,15 +46,24 @@ module.exports = {
     PUT: (request, reply) => {
         let specificTopic = request.payload;
 
-        specificTopic.generalTopic = specificTopic.generalTopic.join(',');
+        specificTopic.idGeneralTopic = specificTopic.idGeneralTopic.join(',');
 
         db.getConnection((err, connection) => {
-            connection.query('CALL specificTopic_update(?, ?, ?, ?, ?)', [specificTopic.id, specificTopic.name, specificTopic.generalTopic, specificTopic.status, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL specificTopic_update(?, ?, ?, ?, ?)', [specificTopic.id, specificTopic.name, specificTopic.idGeneralTopic, specificTopic.status, 1], (error, results, fields) => { // @todo define user ID
                 connection.release();
                 
                 if (error) throw error;
 
-                reply(results[0]);
+                if (results[0][0].SUCCESS === 0) {
+                    reply(statusMessage.BAD_REQUEST);
+                }
+                else {
+                    let resultSpecificTopic = results[0][0];
+                    resultSpecificTopic.idGeneralTopic = results[1].map(item => item.idGeneralTopic);
+
+                    reply(resultSpecificTopic);
+                }
+
             });
         });
     }

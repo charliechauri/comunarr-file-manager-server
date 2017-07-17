@@ -2,6 +2,8 @@
 
 const db = require(`${global.__base}/src/middleware/db`);
 
+const statusMessage = require(`${global.__base}/src/utils/request-status-message`);
+
 module.exports = {
     GET: (request, reply) => {
         db.getConnection((err, connection) => {
@@ -10,7 +12,9 @@ module.exports = {
 
                 if (error) throw error;
 
-                reply(results[0]);
+                if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
+                else { reply(results[0][0]); }
+
             });
         });
     }
