@@ -30,6 +30,13 @@ module.exports = (() => {
             config: {
                 handler: FileController.DELETE
             }
-        }
+        },
+        {
+            method: 'POST',
+            path: BASE_PATH.concat('/specific'),
+            config: {
+                handler: FileController.POST_SPECIFIC
+            }
+        },
     ];
 })();
