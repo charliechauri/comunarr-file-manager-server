@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `comunarr` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE  IF NOT EXISTS `comunarr` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `comunarr`;
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: 35.184.224.0    Database: comunarr
+-- Host: 127.0.0.1    Database: comunarr
 -- ------------------------------------------------------
--- Server version	5.7.14-google
+-- Server version	5.7.18
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,7 @@ CREATE TABLE `collective` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `comunarrProject` (
   `name` varchar(255) NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `contentType` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,9 +99,9 @@ CREATE TABLE `file` (
   `idPrivacyType` int(11) NOT NULL,
   `idContentType` int(11) NOT NULL,
   `idFileType` int(11) NOT NULL,
-  `updateDate` datetime NOT NULL,
+  `updateDate` date NOT NULL,
   `idUser` int(11) NOT NULL,
-  `timestamp` varchar(45) NOT NULL,
+  `timestamp` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idCollective_idx` (`idCollective`),
   KEY `idComunarrProject_idx` (`idComunarrProject`),
@@ -119,7 +119,7 @@ CREATE TABLE `file` (
   CONSTRAINT `idPrivacyType` FOREIGN KEY (`idPrivacyType`) REFERENCES `privacyType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idSpecificTopic` FOREIGN KEY (`idSpecificTopic`) REFERENCES `specificTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idUser` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `fileType` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +148,7 @@ CREATE TABLE `generalTopic` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `keyWord` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,7 +208,7 @@ CREATE TABLE `specificTopic` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +244,7 @@ CREATE TABLE `user` (
   `idUserType` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_userType_idx` (`idUserType`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +291,7 @@ CREATE TABLE `userType` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `split_str`(
+CREATE FUNCTION `split_str`(
   str VARCHAR(1000),
   delimit VARCHAR(12),
   position INT
@@ -314,7 +314,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `userCanAccessTheFile`(
+CREATE FUNCTION `userCanAccessTheFile`(
 	p_idUser INT,
     p_idFile INT
 ) RETURNS tinyint(1)
@@ -352,7 +352,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `userIsActive`(
+CREATE FUNCTION `userIsActive`(
 	p_idUser INT
 ) RETURNS tinyint(1)
 BEGIN
@@ -379,7 +379,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `userIsAdmin`(
+CREATE FUNCTION `userIsAdmin`(
 	p_idUser INT
 ) RETURNS tinyint(1)
 BEGIN
@@ -408,7 +408,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateCollective`(
+CREATE FUNCTION `validateCollective`(
 	p_id INT,
     p_name VARCHAR(255),
     p_idUser INT
@@ -470,7 +470,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateComunarrProject`(
+CREATE FUNCTION `validateComunarrProject`(
 	p_id INT,
 	p_name VARCHAR(255),
     p_idUser INT
@@ -520,7 +520,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateContentType`(
+CREATE FUNCTION `validateContentType`(
 	p_id INT,
 	p_name VARCHAR(255),
     p_idUser INT
@@ -570,7 +570,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateFile`(
+CREATE FUNCTION `validateFile`(
 	p_id INT,
 	p_name VARCHAR(200),
     p_author VARCHAR(255),
@@ -583,9 +583,8 @@ CREATE  FUNCTION `validateFile`(
     p_idPrivacyType INT,
     p_idContentType INT,
     p_fileType VARCHAR(5), 
-    p_updateDate DATE, 
     p_idUser INT,
-    p_timestamp TIMESTAMP,
+    p_timestamp VARCHAR(50),
     p_arraykeyWords VARCHAR(1000),
     p_action TINYINT # 1 - SELECT, 2 - INSERT, 3 - UPDATE, 4 - DELETE
     
@@ -632,7 +631,6 @@ BEGIN
             OR p_idPrivacyType IS NULL
             OR p_idContentType IS NULL
             OR p_fileType IS NULL
-            OR p_updateDate IS NULL
             OR p_idUser IS NULL
             OR p_timestamp IS NULL)
 		THEN
@@ -691,7 +689,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateGeneralTopic`(
+CREATE FUNCTION `validateGeneralTopic`(
 	p_id INT,
 	p_name VARCHAR(255),
     p_idUser INT
@@ -741,7 +739,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateSpecificTopic`(
+CREATE FUNCTION `validateSpecificTopic`(
 	p_id INT,
     p_name VARCHAR(255),
     p_idUser INT
@@ -806,7 +804,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateUser`(
+CREATE FUNCTION `validateUser`(
 	p_id INT,
     p_name VARCHAR(255),
     p_password VARCHAR(255),
@@ -886,7 +884,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  FUNCTION `validateUserPassword`(
+CREATE FUNCTION `validateUserPassword`(
 	p_id INT,
 	p_password VARCHAR(255),
     p_newPassword VARCHAR(255),
@@ -934,7 +932,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `collective_comunarrProject_select`()
+CREATE PROCEDURE `collective_comunarrProject_select`()
 BEGIN
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
@@ -961,9 +959,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `collective_insert`(
+CREATE PROCEDURE `collective_insert`(
 	IN p_name VARCHAR(255),
     IN p_arrayIdComunarrProject VARCHAR(1000),
     IN p_idUser INT
@@ -986,16 +984,23 @@ START TRANSACTION;
     
   ELSE
     
-	  INSERT INTO collective (name)
+	  INSERT INTO comunarr.collective (name)
 	  VALUES (p_name);
       
-	 SET insertedId = LAST_INSERT_ID();
+	  SET insertedId = LAST_INSERT_ID();
 	  
-      INSERT INTO collective_comunarrProject (idCollective, idComunarrProject)
+      INSERT INTO comunarr.collective_comunarrProject (idCollective, idComunarrProject)
       SELECT insertedId, id
       FROM temporaryIdTable;
       
-	  SELECT 1 AS 'SUCCESS';
+      # Return inserted object
+	  SELECT id, name, status
+      FROM comunarr.collective
+      WHERE id = insertedId;
+      
+      SELECT idCollective, idComunarrProject
+      FROM comunarr.collective_comunarrProject
+      WHERE idCollective = insertedId;
   
   END IF;
   
@@ -1019,7 +1024,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `collective_select`()
+CREATE PROCEDURE `collective_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1039,9 +1044,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `collective_update`(
+CREATE PROCEDURE `collective_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_arrayIdComunarrProject VARCHAR(1000),
@@ -1077,7 +1082,14 @@ START TRANSACTION;
       SELECT p_id, id
       FROM temporaryIdTable;
   
-	  SELECT 1 AS 'SUCCESS';
+	  # Return updated object
+	  SELECT id, name, status
+      FROM comunarr.collective
+      WHERE id = p_id;
+      
+      SELECT idCollective, idComunarrProject
+      FROM comunarr.collective_comunarrProject
+      WHERE idCollective = p_id;
       
   END IF;  
   
@@ -1099,13 +1111,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `comunarrProject_insert`(
+CREATE PROCEDURE `comunarrProject_insert`(
 	IN p_name VARCHAR(255),
     IN p_idUser INT
 )
 BEGIN
+
+DECLARE insertedId INT;
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
@@ -1118,10 +1132,15 @@ START TRANSACTION;
     
   ELSE
       
-	  INSERT INTO comunarrProject (name)
+	  INSERT INTO comunarr.comunarrProject (name)
 	  VALUES (p_name);
-		
-	  SELECT 1 AS 'SUCCESS';
+      
+      SET insertedId = LAST_INSERT_ID();
+	
+	  # Return inserted object	
+	  SELECT id, name, status
+      FROM comunarr.comunarrProject
+      WHERE id = insertedId;
   
   END IF;
   
@@ -1143,7 +1162,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `comunarrProject_select`()
+CREATE PROCEDURE `comunarrProject_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1163,9 +1182,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `comunarrProject_update`(
+CREATE PROCEDURE `comunarrProject_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status BOOL,
@@ -1184,12 +1203,15 @@ START TRANSACTION;
     
   ELSE
 
-	  UPDATE comunarrProject SET 
+	  UPDATE comunarr.comunarrProject SET 
 			name = p_name,
 			status = p_status
 	  WHERE id = p_id;
 		
-	  SELECT 1 AS 'SUCCESS';
+	  # Return updated object
+      SELECT id, name, status
+      FROM comunarr.comunarrProject 
+      WHERE id = p_id;
   
   END IF;
   
@@ -1209,13 +1231,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `contentType_insert`(
+CREATE PROCEDURE `contentType_insert`(
 	IN p_name VARCHAR(255),
     IN p_idUser INT
 )
 BEGIN
+
+DECLARE insertedId INT;
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
@@ -1230,8 +1254,13 @@ START TRANSACTION;
 
 	  INSERT INTO contentType (name)
 	  VALUES (p_name);
-		
-	  SELECT 1 AS 'SUCCESS';
+	
+	  # Return the inserted object
+	  SET insertedId = LAST_INSERT_ID();
+      
+      SELECT id, name, status
+      FROM comunarr.contentType
+      WHERE id = insertedId;
   
   END IF;
   
@@ -1253,7 +1282,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `contentType_select`()
+CREATE PROCEDURE `contentType_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1273,9 +1302,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `contentType_update`(
+CREATE PROCEDURE `contentType_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status BOOL,
@@ -1294,12 +1323,15 @@ START TRANSACTION;
     
   ELSE
 
-	  UPDATE contentType SET 
+	  UPDATE comunarr.contentType SET 
 			name = p_name,
 			status = p_status
 	  WHERE id = p_id;
     
-	  SELECT 1 AS 'SUCCESS';
+	  # Return the updated object
+	  SELECT id, name, status
+      FROM comunarr.contentType
+      WHERE id = p_id;
   
   END IF;
 
@@ -1321,7 +1353,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `fileType_select`()
+CREATE PROCEDURE `fileType_select`()
 BEGIN
 
   SELECT id, name
@@ -1343,7 +1375,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `file_delete`(	
+CREATE PROCEDURE `file_delete`(	
 	IN p_id INT,
     IN p_idUser INT
 )
@@ -1355,7 +1387,7 @@ DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
 START TRANSACTION;
 
 	IF (SELECT validateFile(p_id, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-		NULL, NULL, NULL, NULL, NULL, p_idUser, NULL, NULL, 4)) = 0 
+		NULL, NULL, NULL, NULL, p_idUser, NULL, NULL, 4)) = 0 
 	THEN
 
 		SELECT 0 AS 'SUCCESS';
@@ -1368,7 +1400,7 @@ START TRANSACTION;
         # Delete the file register
         DELETE FROM comunarr.file WHERE id = p_id;
         
-        SELECT 1 AS 'SUCCESS';
+        SELECT p_id AS 'id';
         
     END IF;
 
@@ -1390,7 +1422,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `file_insert`(
+CREATE PROCEDURE `file_insert`(
 	IN p_name VARCHAR(200),
     IN p_author VARCHAR(255),
     IN p_place VARCHAR(255),
@@ -1402,15 +1434,14 @@ CREATE  PROCEDURE `file_insert`(
     IN p_idPrivacyType INT,
     IN p_idContentType INT,
     IN p_fileType VARCHAR(5), 
-    IN p_updateDate DATE, 
     IN p_idUser INT,
-    IN p_timestamp TIMESTAMP,
+    IN p_timestamp VARCHAR(50),
     IN p_arraykeyWords VARCHAR(1000)
 )
 BEGIN
 
 DECLARE idFileType INT;
-DECLARE idFile INT;
+DECLARE insertedId INT;
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
@@ -1424,13 +1455,13 @@ START TRANSACTION;
 	SET p_fileType = LTRIM(RTRIM(p_fileType));   
     
 	IF (SELECT validateFile(NULL, p_name, p_author, p_place, p_relatedDate, p_idCollective, p_idComunarrProject, p_idGeneralTopic,
-		p_idSpecificTopic, p_idPrivacyType, p_idContentType, p_fileType, p_updateDate, p_idUser, p_timestamp, p_arraykeyWords, 2)) = 0 
+		p_idSpecificTopic, p_idPrivacyType, p_idContentType, p_fileType, p_idUser, p_timestamp, p_arraykeyWords, 2)) = 0 
 	THEN
 
 		SELECT 0 AS 'SUCCESS';
     
 	ELSE
-        
+    
 		# Assign the file type id
 		SET idFileType = (SELECT id FROM fileType WHERE name = p_fileType);
 		
@@ -1445,19 +1476,28 @@ START TRANSACTION;
         INSERT INTO comunarr.file (name, author, place, relatedDate, idCollective, idComunarrProject, idGeneralTopic, 
 			idSpecificTopic, idPrivacyType, idContentType, idFileType, updateDate, idUser, timestamp)
         VALUES (p_name, p_author, p_place, p_relatedDate, p_idCollective, p_idComunarrProject, p_idGeneralTopic, 
-			p_idSpecificTopic, p_idPrivacyType, p_idContentType, idFileType, p_updateDate, p_idUser, p_timestamp);
+			p_idSpecificTopic, p_idPrivacyType, p_idContentType, idFileType, CURDATE(), p_idUser, p_timestamp);
         
         # Insert key words
 		IF p_arrayKeyWords IS NOT NULL 
         THEN 
             
-			SET idFile = LAST_INSERT_ID();
+			SET insertedId = LAST_INSERT_ID();
             
-            CALL keyWord_insert(idFile, p_arraykeyWords);
+            CALL keyWord_insert(insertedId, p_arraykeyWords);
 			
 		END IF;
         
-        SELECT 1 AS 'SUCCESS';
+		# Return inserted object
+	    SELECT id, name, author, place, relatedDate, idCollective, idComunarrProject, 
+			idGeneralTopic, idSpecificTopic, idPrivacyType, idContentType, idFileType, 
+            updateDate, idUser, timestamp
+	    FROM comunarr.file
+	    WHERE id = insertedId;
+	  
+	    SELECT idKeyWord, idFile
+	    FROM comunarr.keyWord_file
+	    WHERE idFile = insertedId;
         
 	END IF;
     
@@ -1479,18 +1519,18 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `file_select`(
+CREATE PROCEDURE `file_select`(
 	IN p_id INT,
     IN p_idUser INT
 )
 BEGIN
 
 	IF (SELECT validateFile(p_id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-		NULL, NULL, NULL, NULL, p_idUser, NULL, NULL, 1)) = 1
+		NULL, NULL, NULL, p_idUser, NULL, NULL, 1)) = 1
 	THEN
     
         SELECT F.id, F.name, F.author, F.place, F.relatedDate, 
-			F.idCollective, C.name AS 'colletive', 
+			F.idCollective, C.name AS 'collective', 
 			F.idComunarrProject, CP.name AS  'comunarrProject',
             F.idGeneralTopic, GT.name AS 'generalTopic',
             F.idSpecificTopic, ST.name AS 'specificTopic',
@@ -1531,7 +1571,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `file_selectSimpleSearch`(
+CREATE PROCEDURE `file_selectSimpleSearch`(
 	IN p_name VARCHAR(255),
     IN p_author VARCHAR(255),
     IN p_idComunarrProject INT,
@@ -1543,10 +1583,10 @@ CREATE  PROCEDURE `file_selectSimpleSearch`(
 BEGIN
 
 	DECLARE idFile INT;
-    DECLARE cursor_finished INT DEFAULT 0;
+    DECLARE done TINYINT(1) DEFAULT FALSE;
     
     IF (SELECT validateFile(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-		NULL, NULL, NULL, NULL, p_idUser, NULL, NULL, 1)) = 1 
+		NULL, NULL, NULL, p_idUser, NULL, NULL, 1)) = 1 
 	THEN
 		BEGIN
         
@@ -1562,16 +1602,21 @@ BEGIN
             AND (SELECT userCanAccessTheFile(p_idUser, id)) = 1;
             
         DECLARE CONTINUE HANDLER FOR
-        NOT FOUND SET cursor_finished = 1;    
+        NOT FOUND SET done = TRUE;    
             
 		OPEN file_cursor;
         
-        FETCH file_cursor INTO idFile;
-        
         get_file: LOOP
-	 
+        
+			FETCH file_cursor INTO idFile;
+			
+			IF done  
+			THEN
+				LEAVE get_file;
+			END IF;
+        
 			SELECT F.id, F.name, F.author, F.place, F.relatedDate, 
-			F.idCollective, C.name AS 'colletive', 
+			F.idCollective, C.name AS 'collective', 
 			F.idComunarrProject, CP.name AS  'comunarrProject',
             F.idGeneralTopic, GT.name AS 'generalTopic',
             F.idSpecificTopic, ST.name AS 'specificTopic',
@@ -1594,19 +1639,99 @@ BEGIN
 			FROM comunarr.keyWord_file AS KF
 			WHERE KF.idFile = idFile;
             
-            FETCH file_cursor INTO idFile;
-            
-            IF cursor_finished = 1 
-            THEN 
-				LEAVE get_file;
-			END IF;
-            
         END LOOP get_file;
 		CLOSE file_cursor;
 		END;
         
 	END IF;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `file_selectSpecificSearch` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `file_selectSpecificSearch`(
+	IN p_filters VARCHAR(5000)
+)
+BEGIN
+
+DECLARE idFile INT;
+DECLARE done TINYINT(1) DEFAULT FALSE;
+
+DECLARE file_cursor CURSOR FOR
+SELECT id 
+FROM temporaryIdTable;
+
+DECLARE CONTINUE HANDLER FOR
+NOT FOUND SET done = TRUE;  
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
+
+START TRANSACTION;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS temporaryIdTable(id INT);
+	TRUNCATE TABLE temporaryIdTable;
+      
+    SET @query = CONCAT('INSERT INTO temporaryIdTable(id)
+				  SELECT id 	
+                  FROM comunarr.file
+                  WHERE ', p_filters);
+	PREPARE stmt FROM @query;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
+		
+	OPEN file_cursor;
+    
+    get_file: LOOP
+		FETCH file_cursor INTO idFile;
+		
+		IF done  
+		THEN
+			LEAVE get_file;
+		END IF;
+	
+		SELECT F.id, F.name, F.author, F.place, F.relatedDate, 
+		F.idCollective, C.name AS 'collective', 
+		F.idComunarrProject, CP.name AS  'comunarrProject',
+		F.idGeneralTopic, GT.name AS 'generalTopic',
+		F.idSpecificTopic, ST.name AS 'specificTopic',
+		F.idPrivacyType, PT.name AS 'privacyType',
+		F.idContentType, CT.name AS 'contentType',
+		FT.name AS 'fileType', F.updateDate, U.name AS 'uploadedBy',
+		F.idUser
+		FROM comunarr.file AS F
+		INNER JOIN comunarr.collective AS C ON F.idCollective = C.id
+		INNER JOIN comunarr.comunarrProject AS CP ON F.idComunarrProject = CP.id
+		INNER JOIN comunarr.generalTopic AS GT ON F.idGeneralTopic = GT.id
+		INNER JOIN comunarr.specificTopic AS ST ON F.idSpecificTopic = ST.id
+		INNER JOIN comunarr.privacyType AS PT ON F.idPrivacyType = PT.id
+		INNER JOIN comunarr.contentType AS CT ON F.idContentType = CT.id
+		INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.id
+		INNER JOIN comunarr.user AS U ON F.idUser = U.id
+		WHERE F.id = idFile;
+		
+		SELECT idKeyWord
+		FROM comunarr.keyWord_file AS KF
+		WHERE KF.idFile = idFile;
+		
+	END LOOP get_file;
+	CLOSE file_cursor;
+    
+	# Delete temporary tables
+	DROP TEMPORARY TABLE IF EXISTS temporaryIdTable;
+    
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1623,7 +1748,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `file_update`(
+CREATE PROCEDURE `file_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(200),
     IN p_author VARCHAR(255),
@@ -1636,9 +1761,8 @@ CREATE  PROCEDURE `file_update`(
     IN p_idPrivacyType INT,
     IN p_idContentType INT,
     IN p_fileType VARCHAR(5), 
-    IN p_updateDate DATE, 
     IN p_idUser INT,
-    IN p_timestamp TIMESTAMP,
+    IN p_timestamp VARCHAR(50),
     IN p_arraykeyWords VARCHAR(1000)
 )
 BEGIN
@@ -1657,13 +1781,13 @@ START TRANSACTION;
 	SET p_fileType = LTRIM(RTRIM(p_fileType));   
     
 	IF (SELECT validateFile(p_id, p_name, p_author, p_place, p_relatedDate, p_idCollective, p_idComunarrProject, p_idGeneralTopic,
-		p_idSpecificTopic, p_idPrivacyType, p_idContentType, p_fileType, p_updateDate, p_idUser, p_timestamp, p_arraykeyWords, 3)) = 0 
+		p_idSpecificTopic, p_idPrivacyType, p_idContentType, p_fileType, p_idUser, p_timestamp, p_arraykeyWords, 3)) = 0 
 	THEN
 
 		SELECT 0 AS 'SUCCESS';
     
 	ELSE
-        
+    
 		# Assign the file type id
 		SET idFileType = (SELECT id FROM fileType WHERE name = p_fileType);
 		
@@ -1687,7 +1811,7 @@ START TRANSACTION;
             idPrivacyType = p_idPrivacyType, 
             idContentType = p_idContentType, 
             idFileType = idFileType, 
-            updateDate = p_updateDate, 
+            updateDate = CURDATE(), 
             idUser = p_idUser, 
             timestamp = p_timestamp
 		WHERE id = p_id;
@@ -1697,10 +1821,19 @@ START TRANSACTION;
         THEN
 			DELETE FROM keyWord_file WHERE idFile = p_id;
         ELSE
-            CALL saveKeyWords(p_id);
+            CALL saveKeyWords(p_id, p_arraykeyWords);
 		END IF;
         
-        SELECT 1 AS 'SUCCESS';
+		# Return inserted object
+	    SELECT id, name, author, place, relatedDate, idCollective, idComunarrProject, 
+			idGeneralTopic, idSpecificTopic, idPrivacyType, idContentType, idFileType, 
+            updateDate, idUser, timestamp
+	    FROM comunarr.file
+	    WHERE id = p_id;
+	  
+	    SELECT idKeyWord, idFile
+	    FROM comunarr.keyWord_file
+	    WHERE idFile = p_id;
         
 	END IF;
     
@@ -1720,13 +1853,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `generalTopic_insert`(
+CREATE PROCEDURE `generalTopic_insert`(
 	IN p_name VARCHAR(255),
     IN p_idUser INT
 )
 BEGIN
+
+DECLARE insertedId INT;
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
@@ -1741,8 +1876,13 @@ START TRANSACTION;
 
 	  INSERT INTO generalTopic (name)
 	  VALUES (p_name);
+      
+	  SET insertedId = LAST_INSERT_ID();
 	  
-	  SELECT 1 AS 'SUCCESS';
+      # Return inserted object
+	  SELECT id, name, status
+      FROM comunarr.generalTopic
+      WHERE id = insertedId;
   
   END IF;
   
@@ -1764,7 +1904,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `generalTopic_select`()
+CREATE PROCEDURE `generalTopic_select`()
 BEGIN
 
   SELECT id, name, status
@@ -1784,9 +1924,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `generalTopic_update`(
+CREATE PROCEDURE `generalTopic_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status BOOL,
@@ -1810,7 +1950,10 @@ START TRANSACTION;
 			status = p_status
 	  WHERE id = p_id;
 		
-	  SELECT 1 AS 'SUCCESS';
+	  # Return updated object
+	  SELECT id, name, status
+      FROM comunarr.generalTopic
+      WHERE id = p_id;
   
   END IF;
   
@@ -1830,18 +1973,13 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `keyWord_insert`(
+CREATE PROCEDURE `keyWord_insert`(
 	IN p_idFile INT,
     IN p_arrayKeyWords VARCHAR(1000)
 )
 BEGIN
-
-DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
-DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
-
-START TRANSACTION;
 
 	IF p_arrayKeyWords IS NOT NULL
     THEN
@@ -1882,8 +2020,6 @@ START TRANSACTION;
 		END IF;
 	
     END IF;
-
-COMMIT;
    
 END ;;
 DELIMITER ;
@@ -1901,7 +2037,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `keyWord_select`()
+CREATE PROCEDURE `keyWord_select`()
 BEGIN
 
   SELECT id, name
@@ -1923,7 +2059,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `privacyType_select`()
+CREATE PROCEDURE `privacyType_select`()
 BEGIN
 
   SELECT id, name
@@ -1945,7 +2081,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `saveKeyWords`(
+CREATE PROCEDURE `saveKeyWords`(
 	IN p_idFile INT,
     IN p_arrayKeyWords VARCHAR(1000)
 )
@@ -2014,7 +2150,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `specificTopic_generalTopic_select`()
+CREATE PROCEDURE `specificTopic_generalTopic_select`()
 BEGIN
 
   SELECT idSpecificTopic, idGeneralTopic
@@ -2034,9 +2170,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `specificTopic_insert`(
+CREATE PROCEDURE `specificTopic_insert`(
 	IN p_name VARCHAR(255),
     IN p_arrayIdGeneralTopic VARCHAR(1000),
     IN p_idUser INT
@@ -2068,7 +2204,14 @@ START TRANSACTION;
       SELECT insertedId, id
       FROM temporaryIdTable;  
         
-	  SELECT 1 AS 'SUCCESS';
+	  # Return inserted object
+	  SELECT id, name, status
+      FROM comunarr.specificTopic
+      WHERE id = insertedId;
+      
+      SELECT idSpecificTopic, idGeneralTopic
+      FROM comunarr.specificTopic_generalTopic
+      WHERE idSpecificTopic = insertedId;
       
 	END IF;
 
@@ -2090,7 +2233,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `specificTopic_select`()
+CREATE PROCEDURE `specificTopic_select`()
 BEGIN
 
   SELECT id, name, status
@@ -2110,9 +2253,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `specificTopic_update`(
+CREATE PROCEDURE `specificTopic_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_arrayIdGeneralTopic VARCHAR(1000),
@@ -2148,7 +2291,14 @@ START TRANSACTION;
       SELECT p_id, id
       FROM temporaryIdTable;
 		
-	  SELECT 1 AS 'SUCCESS';
+	  # Return updated object
+	  SELECT id, name, status
+      FROM comunarr.specificTopic
+      WHERE id = p_id;
+      
+      SELECT idSpecificTopic, idGeneralTopic
+      FROM comunarr.specificTopic_generalTopic
+      WHERE idSpecificTopic = p_id;
       
 	END IF;
     
@@ -2172,7 +2322,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `splitArray`(
+CREATE PROCEDURE `splitArray`(
 	IN array VARCHAR(1000)
 )
 BEGIN
@@ -2223,7 +2373,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `splitStringArray`(
+CREATE PROCEDURE `splitStringArray`(
 	IN array VARCHAR(1000)
 )
 BEGIN
@@ -2273,7 +2423,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `user_authenticate`(IN userName CHAR(255), IN password CHAR(255))
+CREATE PROCEDURE `user_authenticate`(IN userName CHAR(255), IN password CHAR(255))
 BEGIN    
 	DECLARE idUser INT;
 
@@ -2301,9 +2451,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `user_insert`(
+CREATE PROCEDURE `user_insert`(
 	IN p_name VARCHAR(255),
     IN p_password VARCHAR(255),
     IN p_userName VARCHAR(255),
@@ -2311,6 +2461,8 @@ CREATE  PROCEDURE `user_insert`(
     IN p_idUser INT
 )
 BEGIN
+
+DECLARE insertedId INT;
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
@@ -2327,7 +2479,12 @@ START TRANSACTION;
 		INSERT INTO comunarr.user (name, password, status, userName, idUserType)
         VALUES (p_name, p_password, 1, p_userName, p_idUserType);
         
-        SELECT 1 AS 'SUCCESS';
+		SET insertedId = LAST_INSERT_ID();
+        
+        # Return inserted object
+        SELECT id, name, status, userName, idUserType
+        FROM comunarr.user
+        WHERE id = insertedId;
 		
 	END IF;
     
@@ -2349,7 +2506,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `user_select`()
+CREATE PROCEDURE `user_select`()
 BEGIN
 
 	SELECT id, name, status, userName, idUserType
@@ -2369,9 +2526,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `user_update`(
+CREATE PROCEDURE `user_update`(
 	IN p_id INT,
 	IN p_name VARCHAR(255),
     IN p_status TINYINT(1),
@@ -2400,7 +2557,10 @@ START TRANSACTION;
             idUserType = p_idUserType
 		WHERE id = p_id;
 			
-        SELECT 1 AS 'SUCCESS';
+        # Return updated object
+        SELECT id, name, status, userName, idUserType
+        FROM comunarr.user
+        WHERE id = p_id;
 		
 	END IF;
     
@@ -2422,7 +2582,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `user_updatePassword`(
+CREATE PROCEDURE `user_updatePassword`(
 	IN p_id INT,
 	IN p_password VARCHAR(255),
     IN p_newPassword VARCHAR(255),
@@ -2467,4 +2627,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-10 19:12:11
+-- Dump completed on 2017-07-18 22:50:57
