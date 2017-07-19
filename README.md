@@ -34,7 +34,6 @@ npm start
 * Catalogs
   * Change password - @charliechauri
 * Delete files - @charliechauri
-* Specific search - @ariherna
   * Date filters (1900-01-01 = undefined date)
 
 ## Built with 💚 and the following excellent projects:
