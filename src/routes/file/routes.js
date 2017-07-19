@@ -33,9 +33,9 @@ module.exports = (() => {
         },
         {
             method: 'POST',
-            path: BASE_PATH.concat('/specific'),
+            path: BASE_PATH.concat('/specific-search'),
             config: {
-                handler: FileController.POST_SPECIFIC
+                handler: FileController.POST_SPECIFIC_SEARCH
             }
         },
     ];

@@ -13,9 +13,9 @@ module.exports = {
 
                 if (error) throw error;
 
-                if (results.fieldCount === 0)
+                if (results.fieldCount === 0) {
                     reply(statusMessage.NOT_FOUND);
-                else {
+                } else {
                     let resultsSet = results.slice(0, -1);
                     let arrLen = resultsSet.length;
                     let arrFile = [];
@@ -105,21 +105,30 @@ module.exports = {
         });
     },
 
-    POST_SPECIFIC: (request, reply) => { // @todo: Change name
+    POST_SPECIFIC_SEARCH: (request, reply) => { 
         let specificSearch = request.payload;
-        let query = generateQuery(specificSearch);
+        let filters = generateQuery(specificSearch);
 
         db.getConnection((err, connection) => {
-            connection.query(query, [], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL file_selectSpecificSearch(?)', [filters], (error, results, fields) => { // @todo define user ID
                 connection.release();
 
-                if (error) throw error;
-
-                if (results.length === 0) {
+                if (results.fieldCount === 0)
                     reply(statusMessage.NOT_FOUND);
-                }
                 else {
-                    reply(results);
+                    let resultsSet = results.slice(0, -1);
+                    let arrLen = resultsSet.length;
+                    let arrFile = [];
+
+                    for (let index = 0; index < arrLen; index++) {
+                        let file = resultsSet[index][0];
+                        index++;
+                        file.idKeyWord = resultsSet[index].map(item => item.idKeyWord);
+
+                        arrFile.push(file);
+                    }
+
+                    reply(arrFile);
                 }
 
             });
@@ -128,44 +137,40 @@ module.exports = {
 };
 
 const generateQuery = obj => {
-    let filters = [];
-
-    let query = 'SELECT * FROM comunarr.file WHERE ';
+    let arrFilters = [];
+    let filters = '';
 
     // File name filter
-    query = obj.name === null? query : query.concat(`name LIKE "%${obj.name}%" `);
+    if (obj.name) { arrFilters.push(`name LIKE "%${obj.name}%" `); }
 
     // Author filter
-    if (obj.author.OR.length > 0) { filters.push(formatORStringFilters('author', obj.author.OR)); }
-    if (obj.author.NOT.length > 0) { filters.push(formatNOTStringFilters('author', obj.author.NOT)); }
+    if (obj.author.OR.length > 0) { arrFilters.push(formatORStringFilters('author', obj.author.OR)); }
+    if (obj.author.NOT.length > 0) { arrFilters.push(formatNOTStringFilters('author', obj.author.NOT)); }
 
     // Place filter
-    if (obj.place.OR.length > 0) { filters.push(formatORStringFilters('place', obj.place.OR)); }
-    if (obj.place.NOT.length > 0) { filters.push(formatNOTStringFilters('place', obj.place.NOT)); }
+    if (obj.place.OR.length > 0) { arrFilters.push(formatORStringFilters('place', obj.place.OR)); }
+    if (obj.place.NOT.length > 0) { arrFilters.push(formatNOTStringFilters('place', obj.place.NOT)); }
 
     // Id filters
-    let integerFilterNames = Object.keys(obj).filter(name => {
-        return name.startsWith('id');
-    });
+    let integerFilterNames = Object.keys(obj).filter(name => { return name.startsWith('id'); });
 
     for (let filter of integerFilterNames){
-        if (obj[filter].OR.length > 0) { filters.push(formatORIntegerFilters(filter, obj[filter].OR)); }
-        if (obj[filter].NOT.length > 0) { filters.push(formatNOTIntegerFilters(filter, obj[filter].NOT)); }
+        if (obj[filter].OR.length > 0) { arrFilters.push(formatORIntegerFilters(filter, obj[filter].OR)); }
+        if (obj[filter].NOT.length > 0) { arrFilters.push(formatNOTIntegerFilters(filter, obj[filter].NOT)); }
     };
 
     // RelatedDate filter
-    filters.push(('(relatedDate IS NULL OR ').concat(formatDateFilters('relatedDate', obj.relatedDate)).concat(')'));
+    arrFilters.push(('(relatedDate IS NULL OR ').concat(formatDateFilters('relatedDate', obj.relatedDate)).concat(')'));
 
     // UpdateDate filter
-    filters.push(formatDateFilters('updateDate', obj.updateDate));
+    arrFilters.push(formatDateFilters('updateDate', obj.updateDate));
 
     // Key words filter
-    if (obj.keyWords.OR.length > 0) { filters.push(formatKeyWordORFilters(obj.keyWords.OR)); }
-    if (obj.keyWords.AND.length > 0) { filters.push(formatKeyWordANDFilters(obj.keyWords.OR)); }
-    if (obj.keyWords.NOT.length > 0) { filters.push(formatKeyWordNOTFilters(obj.keyWords.OR)); }
+    if (obj.keyWords.OR.length > 0) { arrFilters.push(formatKeyWordORFilters(obj.keyWords.OR)); }
+    if (obj.keyWords.AND.length > 0) { arrFilters.push(formatKeyWordANDFilters(obj.keyWords.OR)); }
+    if (obj.keyWords.NOT.length > 0) { arrFilters.push(formatKeyWordNOTFilters(obj.keyWords.OR)); }
 
-
-    return query.concat(filters.join(' AND '));
+    return filters.concat(arrFilters.join(' AND '));
 };
 
 const formatORStringFilters = (param, array) => {
