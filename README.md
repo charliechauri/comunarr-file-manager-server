@@ -28,7 +28,7 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
   * Extension always must be in minus
   * Files should not be .exe
 * Download file - @charliechauri
-* Validate access to routes by user role - @charliechauri 
+* Validate access to routes by user role - @ariherna
   * Use unauthorized status
 * Catalogs
   * Change password - @charliechauri
