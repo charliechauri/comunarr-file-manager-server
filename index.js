@@ -2,6 +2,7 @@ global.__base = `${__dirname}`;
 
 const Hapi = require('hapi');
 const routes = require(`${global.__base}/src/routes/index`);
+const BasicAuth = require('hapi-auth-basic');
 
 const server = new Hapi.Server();
 
@@ -11,13 +12,29 @@ server.connection({
     routes: { cors: !!process.env.CORS_ENV }
 });
 
-for (let route in routes) {
-    server.route(routes[route]);
-}
+server.register(BasicAuth, err => {
+    if (err) throw err;
+    server.auth.strategy('simple', 'basic', {
+        validateFunc: (request, username, password, callback) => {
+            console.log(username);
+            console.log(password);
+            if (username !== 'charli' && password !== 'Tess2016') {
+                return callback(null, false);
+            }
 
-server.start(err => {
-    if (err) {
-        throw err;
+            callback(null, true, { username });
+        }
+    });
+
+    for (let route in routes) {
+        server.route(routes[route]);
     }
-    console.log('Server running at:', server.info.uri);
+
+    server.start(err => {
+        if (err) {
+            console.log(err);
+            throw err;
+        }
+        console.log('Server running at:', server.info.uri);
+    });
 });

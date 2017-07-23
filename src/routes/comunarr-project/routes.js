@@ -7,6 +7,7 @@ module.exports = [
         method: 'GET',
         path: BASE_PATH,
         config: {
+            auth: 'simple',
             handler: ComunarrProjectController.GET
         }
     },
@@ -14,6 +15,7 @@ module.exports = [
         method: 'POST',
         path: BASE_PATH,
         config: {
+            auth: 'simple',
             handler: ComunarrProjectController.POST,
              validate: {
                 payload: {

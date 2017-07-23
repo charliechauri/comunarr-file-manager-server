@@ -7,6 +7,24 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "nodemon",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
+            "program": "${workspaceRoot}/index.js",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "env": {
+                "NODE_ENV": "development",
+                "CORS_ENV": "true",
+                "DATABASE_HOST": "127.0.0.1",
+                "DATABASE_USER": "root",
+                "DATABASE_PASSWORD": "oquesugieres",
+                "DATABASE_SCHEMA": "comunarr"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}/index.js",
             "env": {
