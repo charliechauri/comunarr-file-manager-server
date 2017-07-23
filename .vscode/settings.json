@@ -2,5 +2,6 @@
     "editor.wordWrap": "on",
     "workbench.colorTheme": "Material Theme Palenight",
     "workbench.iconTheme": "material-icon-theme",
-    "editor.fontFamily": "Avenir, Inconsolata, Monofur, Monaco"
+    "editor.fontFamily": "Inconsolata, Avenir, Monofur, Monaco",
+    "editor.minimap.enabled": false
 }
