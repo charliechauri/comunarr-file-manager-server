@@ -20,7 +20,7 @@ npm install
 
 ## Running
 ```
-npm start 
+It is preferred to run the project on [VSCode](https://code.visualstudio.com/) to use the default project's config. Enter to debug section and run "nodemon".
 ```
 
 ## TODO
