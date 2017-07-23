@@ -21,8 +21,9 @@ npm install
 ## Running
 It is preferred to run the project on [VSCode](https://code.visualstudio.com/) to use the default project's config. Enter to debug section and run "nodemon".
 
+![Comunarr](./run.gif "Comunarr logo")
+
 ## TODO
-* Authentication - @charliechauri
 * Upload file - @charliechauri
   * Extension always must be in minus
   * Files should not be .exe
