@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "nodemon",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
-            "program": "${workspaceRoot}/index.js",
+            "program": "${workspaceRoot}/app.js",
             "restart": true,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
@@ -26,7 +26,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}/index.js",
+            "program": "${workspaceRoot}/app.js",
             "env": {
                 "NODE_ENV": "development",
                 "CORS_ENV": "true",
