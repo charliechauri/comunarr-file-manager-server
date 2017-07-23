@@ -7,7 +7,10 @@ module.exports = [
         method: 'GET',
         path: BASE_PATH,
         config: {
-            auth: 'simple',
+            auth: {
+                strategy: 'simple',
+                scope: ['user']
+            },
             handler: ComunarrProjectController.GET
         }
     },
@@ -15,19 +18,26 @@ module.exports = [
         method: 'POST',
         path: BASE_PATH,
         config: {
-            auth: 'simple',
+            auth: {
+                strategy: 'simple',
+                scope: ['admin']
+            },
             handler: ComunarrProjectController.POST,
-             validate: {
+            validate: {
                 payload: {
                     name: Joi.string().min(4).max(255)
                 }
-            } 
+            }
         }
     },
     {
         method: 'PUT',
         path: BASE_PATH,
         config: {
+            auth: {
+                strategy: 'simple',
+                scope: ['admin']
+            },
             handler: ComunarrProjectController.PUT,
             validate: {
                 payload: {
