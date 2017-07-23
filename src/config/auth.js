@@ -7,7 +7,7 @@ module.exports = {
     validate: (request, username, password, callback) => {
         db.getConnection((err, connection) => {
 
-            const query = `SELECT * FROM user WHERE userName =${connection.escape(username)} && password=${connection.escape(password)}`;
+            const query = `SELECT * FROM user WHERE status = 1 && userName =${connection.escape(username)} && password=${connection.escape(password)}`;
             connection.query(query, {}, (error, results, fields) => {
                 connection.release();
 
