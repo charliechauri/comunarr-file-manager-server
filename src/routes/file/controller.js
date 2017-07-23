@@ -167,8 +167,8 @@ const generateQuery = obj => {
 
     // Key words filter
     if (obj.keyWords.OR.length > 0) { arrFilters.push(formatKeyWordORFilters(obj.keyWords.OR)); }
-    if (obj.keyWords.AND.length > 0) { arrFilters.push(formatKeyWordANDFilters(obj.keyWords.OR)); }
-    if (obj.keyWords.NOT.length > 0) { arrFilters.push(formatKeyWordNOTFilters(obj.keyWords.OR)); }
+    if (obj.keyWords.AND.length > 0) { arrFilters.push(formatKeyWordANDFilters(obj.keyWords.AND)); }
+    if (obj.keyWords.NOT.length > 0) { arrFilters.push(formatKeyWordNOTFilters(obj.keyWords.NOT)); }
 
     return filters.concat(arrFilters.join(' AND '));
 };
