@@ -19,10 +19,12 @@ module.exports = {
                     const user = results[0];
                     user.scope = (() => {
                         let scopes = [];
+                        
+
                         switch (user.idUserType) {
-                            case 1: scopes.push('admin'); break;
-                            case 2: scopes.push('member'); break;
-                            case 3: scopes.push('user'); break;
+                            case 1: scopes = ['admin', 'member', 'user'];  break;
+                            case 2: scopes = ['member', 'user']; break;
+                            case 3: scopes = ['user']; break;
                             default: break;
                         }
                         return scopes;
