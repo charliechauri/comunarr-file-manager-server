@@ -2,13 +2,14 @@
 
 const db = require(`${global.__base}/src/middleware/db`);
 const statusMessage = require(`${global.__base}/src/utils/request-status-message`);
+const authInfo = require(`${global.__base}/src/utils/auth-information`);
 
 module.exports = {
     GET: (request, reply) => {
         const params = request.query;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL file_selectSimpleSearch(?, ?, ?, ?, ?, ?, ?)', [params.name, params.author, params.idComunarrProject, params.idCollective, params.idGeneralTopic, params.uploadedByMe, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL file_selectSimpleSearch(?, ?, ?, ?, ?, ?, ?)', [params.name, params.author, params.idComunarrProject, params.idCollective, params.idGeneralTopic, params.uploadedByMe, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
                 connection.release();
 
                 if (error) throw error;
@@ -41,7 +42,7 @@ module.exports = {
         file.timestamp = (+new Date).toString();
 
         db.getConnection((err, connection) => {
-            connection.query('CALL file_insert(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, 1, file.timestamp, file.keyWord], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL file_insert(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, authInfo.GET_USER_ID(request), file.timestamp, file.keyWord], (error, results, fields) => { 
                 connection.release();
 
                 if (error) throw error;
@@ -67,7 +68,7 @@ module.exports = {
         file.timestamp = (+new Date).toString();
 
         db.getConnection((err, connection) => {
-            connection.query('CALL file_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.id, file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, 1, file.timestamp, file.keyWord], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL file_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.id, file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, authInfo.GET_USER_ID(request), file.timestamp, file.keyWord], (error, results, fields) => { 
                 connection.release();
 
                 if (error) throw error;
@@ -89,7 +90,7 @@ module.exports = {
         let id = encodeURIComponent(request.params.id);
 
         db.getConnection((err, connection) => {
-            connection.query('CALL file_delete(?, ?)', [id, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL file_delete(?, ?)', [id, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
 
                 if (error) throw error;
@@ -110,7 +111,7 @@ module.exports = {
         let filters = generateQuery(specificSearch);
 
         db.getConnection((err, connection) => {
-            connection.query('CALL file_selectSpecificSearch(?)', [filters], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL file_selectSpecificSearch(?, ?)', [filters, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
                 connection.release();
 
                 if (results.fieldCount === 0)

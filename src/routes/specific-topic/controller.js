@@ -2,6 +2,7 @@
 
 const db = require(`${global.__base}/src/middleware/db`);
 const statusMessage = require(`${global.__base}/src/utils/request-status-message`);
+const authInfo = require(`${global.__base}/src/utils/auth-information`);
 
 module.exports = {
     GET: (request, reply) => {
@@ -24,7 +25,7 @@ module.exports = {
         specificTopic.idGeneralTopic = specificTopic.idGeneralTopic.join(',');
 
         db.getConnection((err, connection) => {
-            connection.query('CALL specificTopic_insert(?, ?, ?)', [specificTopic.name, specificTopic.idGeneralTopic, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL specificTopic_insert(?, ?, ?)', [specificTopic.name, specificTopic.idGeneralTopic, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
                 connection.release();
                 
                 if (error) throw error;
@@ -49,7 +50,7 @@ module.exports = {
         specificTopic.idGeneralTopic = specificTopic.idGeneralTopic.join(',');
 
         db.getConnection((err, connection) => {
-            connection.query('CALL specificTopic_update(?, ?, ?, ?, ?)', [specificTopic.id, specificTopic.name, specificTopic.idGeneralTopic, specificTopic.status, 1], (error, results, fields) => { // @todo define user ID
+            connection.query('CALL specificTopic_update(?, ?, ?, ?, ?)', [specificTopic.id, specificTopic.name, specificTopic.idGeneralTopic, specificTopic.status, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
                 connection.release();
                 
                 if (error) throw error;
