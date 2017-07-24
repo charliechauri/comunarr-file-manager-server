@@ -8,6 +8,10 @@ module.exports = (() => {
             method: 'GET',
             path: BASE_PATH,
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },
                 handler: CollectiveController.GET
             }
         },
@@ -15,6 +19,10 @@ module.exports = (() => {
             method: 'POST',
             path: BASE_PATH,
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['admin']
+                },
                 handler: CollectiveController.POST,
                 validate: {
                     payload: {
@@ -28,6 +36,10 @@ module.exports = (() => {
             method: 'PUT',
             path: BASE_PATH,
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['admin']
+                },                
                 handler: CollectiveController.PUT,
                 validate: {
                     payload: {

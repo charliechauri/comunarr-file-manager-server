@@ -7,6 +7,10 @@ module.exports = (() => {
             method: 'GET',
             path: BASE_PATH,
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },                
                 handler: FileController.GET
             }
         },
@@ -14,6 +18,10 @@ module.exports = (() => {
             method: 'POST',
             path: BASE_PATH,
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },                
                 handler: FileController.POST
             }
         },
@@ -21,6 +29,10 @@ module.exports = (() => {
             method: 'PUT',
             path: BASE_PATH,
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },                
                 handler: FileController.PUT
             }
         },
@@ -28,6 +40,10 @@ module.exports = (() => {
             method: 'DELETE',
             path: BASE_PATH.concat('/{id}'),
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },                
                 handler: FileController.DELETE
             }
         },
@@ -35,6 +51,10 @@ module.exports = (() => {
             method: 'POST',
             path: BASE_PATH.concat('/specific-search'),
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },                
                 handler: FileController.POST_SPECIFIC_SEARCH
             }
         },

@@ -7,6 +7,10 @@ module.exports = (() => {
             method: 'GET',
             path: BASE_PATH,
             config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },                    
                 handler: KeyWordController.GET
             }
         }

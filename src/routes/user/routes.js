@@ -7,6 +7,10 @@ module.exports = [
         method: 'GET',
         path: BASE_PATH,
         config: {
+             auth: {
+                strategy: 'simple',
+                scope: ['admin']
+            },  
             handler: UserController.GET
         }
     },
@@ -14,6 +18,10 @@ module.exports = [
         method: 'POST',
         path: BASE_PATH,
         config: {
+             auth: {
+                strategy: 'simple',
+                scope: ['admin']
+            },              
             handler: UserController.POST,
             validate: {
                 payload: {
@@ -30,6 +38,10 @@ module.exports = [
         method: 'PUT',
         path: BASE_PATH,
         config: {
+             auth: {
+                strategy: 'simple',
+                scope: ['admin']
+            },              
             handler: UserController.PUT,
             validate: {
                 payload: {

@@ -7,6 +7,10 @@ module.exports = [
         method: 'GET',
         path: BASE_PATH,
         config: {
+            auth: {
+                strategy: 'simple',
+                scope: ['user']
+            },            
             handler: GeneralTopicController.GET
         }
     },
@@ -14,8 +18,12 @@ module.exports = [
         method: 'POST',
         path: BASE_PATH,
         config: {
+            auth: {
+                strategy: 'simple',
+                scope: ['admin']
+            },    
             handler: GeneralTopicController.POST,
-            validate: {
+            validate: {                 
                 payload: {
                     name: Joi.string().min(4).max(255)
                 }
@@ -26,6 +34,10 @@ module.exports = [
         method: 'PUT',
         path: BASE_PATH,
         config: {
+            auth: {
+                strategy: 'simple',
+                scope: ['admin']
+            },                
             handler: GeneralTopicController.PUT,
             validate: {
                 payload: {
