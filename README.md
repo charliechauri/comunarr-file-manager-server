@@ -28,12 +28,11 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
   * Extension always must be in minus
   * Files should not be .exe
 * Download file - @charliechauri
-* Validate access to routes by user role - @ariherna
-  * Use unauthorized status
 * Catalogs
   * Change password - @charliechauri
 * Delete files - @charliechauri
   * Date filters (1900-01-01 = undefined date)
+* Validate all error messages return the same object
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
