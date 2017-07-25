@@ -8,6 +8,7 @@
     "hapi": "^16.4.3",
     "hapi-auth-basic": "^4.2.0",
     "joi": "^10.6.0",
+    "joi-date-extensions": "^1.0.2",
     "mysql": "^2.13.0"
   },
   "devDependencies": {
