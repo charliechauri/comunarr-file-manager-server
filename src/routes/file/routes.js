@@ -3,7 +3,6 @@ const Extension = require('joi-date-extensions');
 const JoiExtended = Joi.extend(Extension);
 const FileController = require(`${global.__base}/src/routes/file/controller`);
 const BASE_PATH = '/file';
-const schema = JoiExtended.date().format('YYYY-MM-DD');
 
 module.exports = (() => {
     return [
