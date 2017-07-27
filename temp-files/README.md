@@ -1,0 +1,1 @@
+All files must be initially stored in this directory. Once it is renamed and validated, it is reallocated in 'files' folder and is deleted from this one.
