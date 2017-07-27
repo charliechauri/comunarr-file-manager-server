@@ -14,7 +14,10 @@ module.exports = {
                 if (error) throw error;
 
                 if (results.fieldCount === 0) { reply(statusMessage.NOT_FOUND); }
-                else { reply(results[0]); }
+                else {
+                    results[0].forEach(item => item.status = !!item.status);
+                    reply(results[0]);
+                }
 
             });
         });
@@ -30,7 +33,11 @@ module.exports = {
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
-                else { reply(results[0][0]); }
+                else {
+                    const item = results[0][0];
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
+                }
 
             });
         });
@@ -46,7 +53,7 @@ module.exports = {
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
-                else { reply(results[0][0]); }
+                else { reply({ message: statusMessage.OK, item: results[0][0] }); }
 
             });
         });
