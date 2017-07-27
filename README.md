@@ -24,10 +24,8 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
 ![Comunarr](./run.gif "Comunarr logo")
 
 ## TODO
-* Upload file - @charliechauri
-  * Extension always must be in minus
-  * Files should not be .exe
-* Download file - @charliechauri
+* Update file - @ariherna
+* Download file - @ariherna
 * Catalogs
   * Change password - @charliechauri
 * Delete files - @charliechauri
