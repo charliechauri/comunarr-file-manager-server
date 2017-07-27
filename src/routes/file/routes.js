@@ -24,7 +24,30 @@ module.exports = (() => {
                 auth: {
                     strategy: 'simple',
                     scope: ['user']
-                },                
+                },            
+                payload: {
+                    maxBytes: 209715200,
+                    output: 'file',
+                    parse: true,
+                    uploads: './temp-files',
+                    allow: 'multipart/form-data' 
+                },
+                validate: {
+                    payload: {
+                        file: Joi.any().required(),
+                        name: Joi.string().min(4).max(255).required(),
+                        author: Joi.string().min(4).max(255).required(),
+                        place: Joi.string().min(4).max(255),
+                        relatedDate: JoiExtended.date().format('YYYY-MM-DD'),
+                        idCollective: Joi.number().integer().min(1).max(100000).required(),
+                        idComunarrProject: Joi.number().integer().min(1).max(100000).required(),
+                        idGeneralTopic: Joi.number().integer().min(1).max(100000).required(),
+                        idSpecificTopic: Joi.number().integer().min(1).max(100000),
+                        idPrivacyType: Joi.number().integer().min(1).max(100000).required(),
+                        idContentType: Joi.number().integer().min(1).max(100000).required(),
+                        keyWords: Joi.array().items(Joi.string().min(4).max(255))
+                    }
+                },    
                 handler: FileController.POST
             }
         },

@@ -119,7 +119,7 @@ CREATE TABLE `file` (
   CONSTRAINT `idPrivacyType` FOREIGN KEY (`idPrivacyType`) REFERENCES `privacyType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idSpecificTopic` FOREIGN KEY (`idSpecificTopic`) REFERENCES `specificTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idUser` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `fileType` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `keyWord` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +193,7 @@ CREATE TABLE `privacyType` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -855,7 +855,7 @@ BEGIN
 		THEN
 			RETURN 0;
 		# The user name is not repeated
-        ELSEIF EXISTS(SELECT * FROM comunarr.user WHERE userName = TRIM(p_userName) AND id != p_id)
+        ELSEIF EXISTS(SELECT * FROM comunarr.user WHERE userName = TRIM(p_userName) AND (p_id IS NULL OR id != p_id))
         THEN
 			RETURN 0;
 		# IdUserType is valid
@@ -1356,7 +1356,7 @@ DELIMITER ;;
 CREATE PROCEDURE `fileType_select`()
 BEGIN
 
-  SELECT id, name
+  SELECT DISTINCT id, name
   FROM comunarr.fileType;
   
 END ;;
@@ -1452,7 +1452,7 @@ START TRANSACTION;
 	SET p_name = LTRIM(RTRIM(p_name));
 	SET p_author = LTRIM(RTRIM(p_author));
 	SET p_place = LTRIM(RTRIM(p_place));
-	SET p_fileType = LTRIM(RTRIM(p_fileType));   
+	SET p_fileType = LOWER(LTRIM(RTRIM(p_fileType)));   
     
 	IF (SELECT validateFile(NULL, p_name, p_author, p_place, p_relatedDate, p_idCollective, p_idComunarrProject, p_idGeneralTopic,
 		p_idSpecificTopic, p_idPrivacyType, p_idContentType, p_fileType, p_idUser, p_timestamp, p_arraykeyWords, 2)) = 0 
@@ -1609,7 +1609,7 @@ BEGIN
         get_file: LOOP
         
 			FETCH file_cursor INTO idFile;
-			
+            
 			IF done  
 			THEN
 				LEAVE get_file;
@@ -1628,7 +1628,7 @@ BEGIN
 			INNER JOIN comunarr.collective AS C ON F.idCollective = C.id
 			INNER JOIN comunarr.comunarrProject AS CP ON F.idComunarrProject = CP.id
 			INNER JOIN comunarr.generalTopic AS GT ON F.idGeneralTopic = GT.id
-			INNER JOIN comunarr.specificTopic AS ST ON F.idSpecificTopic = ST.id
+			LEFT JOIN comunarr.specificTopic AS ST ON F.idSpecificTopic = ST.id
 			INNER JOIN comunarr.privacyType AS PT ON F.idPrivacyType = PT.id
 			INNER JOIN comunarr.contentType AS CT ON F.idContentType = CT.id
 			INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.id
@@ -1662,7 +1662,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `file_selectSpecificSearch`(
-	IN p_filters VARCHAR(5000)
+	IN p_filters VARCHAR(5000),
+    IN p_idUser INT
 )
 BEGIN
 
@@ -1687,11 +1688,13 @@ START TRANSACTION;
     SET @query = CONCAT('INSERT INTO temporaryIdTable(id)
 				  SELECT id 	
                   FROM comunarr.file
-                  WHERE ', p_filters);
+                  WHERE (SELECT userCanAccessTheFile(', p_idUser, ', id)) = 1
+                  AND ', p_filters);
+	
 	PREPARE stmt FROM @query;
 	EXECUTE stmt;
 	DEALLOCATE PREPARE stmt;
-		
+    
 	OPEN file_cursor;
     
     get_file: LOOP
@@ -1731,6 +1734,8 @@ START TRANSACTION;
     
 	# Delete temporary tables
 	DROP TEMPORARY TABLE IF EXISTS temporaryIdTable;
+
+COMMIT;
     
 END ;;
 DELIMITER ;
@@ -2627,4 +2632,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-18 22:50:57
+-- Dump completed on 2017-07-26 22:58:51
