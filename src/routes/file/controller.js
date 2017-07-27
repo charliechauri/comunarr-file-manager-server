@@ -3,6 +3,8 @@
 const db = require(`${global.__base}/src/middleware/db`);
 const statusMessage = require(`${global.__base}/src/utils/request-status-message`);
 const authInfo = require(`${global.__base}/src/utils/auth-information`);
+const fileSystem = require('fs');
+const del = require('del');
 
 module.exports = {
     GET: (request, reply) => {
@@ -38,27 +40,30 @@ module.exports = {
     POST: (request, reply) => {
         let file = request.payload;
 
-        file.keyWord = file.keyWord.join(',');
-        file.timestamp = (+new Date).toString();
+        prepareFile(file, reply,  (file, newFileName) => {
+            db.getConnection((err, connection) => {
+                connection.query('CALL file_insert(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, authInfo.GET_USER_ID(request), file.timestamp, file.keyWords], (error, results, fields) => { 
+                    connection.release();
 
-        db.getConnection((err, connection) => {
-            connection.query('CALL file_insert(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, authInfo.GET_USER_ID(request), file.timestamp, file.keyWord], (error, results, fields) => { 
-                connection.release();
+                    if (error) {
+                        deleteFile(newFileName).catch(error => { throw error; });
+                        throw error; 
+                    }
 
-                if (error) throw error;
+                    if (results[0][0].SUCCESS === 0) {
+                        deleteFile(newFileName).catch(error => { throw error; });
+                        reply(statusMessage.BAD_REQUEST);
+                    }
+                    else {
+                        let resultFile = results[0][0];
+                        resultFile.idKeyWord = results[1].map(item => item.idKeyWord);
 
-                if (results[0][0].SUCCESS === 0) {
-                    reply(statusMessage.BAD_REQUEST);
-                }
-                else {
-                    let resultFile = results[0][0];
-                    resultFile.idKeyWord = results[1].map(item => item.idKeyWord);
-
-                    reply(resultFile);
-                }
-
+                        reply(resultFile);
+                    }
+                });
             });
         });
+
     },
 
     PUT: (request, reply) => {
@@ -174,25 +179,15 @@ const generateQuery = obj => {
     return filters.concat(arrFilters.join(' AND '));
 };
 
-const formatORStringFilters = (param, array) => {
-    return array.map(item => `${param} LIKE "%${item}%"`).join(' OR ');
-};
+const formatORStringFilters = (param, array) => array.map(item => `${param} LIKE "%${item}%"`).join(' OR ');
 
-const formatNOTStringFilters = (param, array) => {
-    return array.map(item => `${param} NOT LIKE "%${item}%"`).join(' AND ');
-};
+const formatNOTStringFilters = (param, array) => array.map(item => `${param} NOT LIKE "%${item}%"`).join(' AND ');
 
-const formatORIntegerFilters = (param, array) => {
-    return (`${param} IN (`.concat(array.join(',')).concat(')'));
-};
+const formatORIntegerFilters = (param, array) => `${param} IN (`.concat(array.join(',')).concat(')');
 
-const formatNOTIntegerFilters = (param, array) => {
-    return (`${param} NOT IN (`.concat(array.join(',')).concat(')'));
-};
+const formatNOTIntegerFilters = (param, array) => `${param} NOT IN (`.concat(array.join(',')).concat(')');
 
-const formatDateFilters = (param, array) => {
-    return (`${param} BETWEEN "${array[0]}" AND "${array[1]}"`);
-};
+const formatDateFilters = (param, array) => `${param} BETWEEN "${array[0]}" AND "${array[1]}"`;
 
 const formatKeyWordORFilters = array => {
     return '('.concat(array.map(item => `EXISTS (SELECT * FROM comunarr.keyWord_file WHERE idFile = id AND idKeyWord = ${item})`).join(' OR ')).concat(')');
@@ -206,4 +201,52 @@ const formatKeyWordANDFilters = array => {
     return array.map(item => `EXISTS (SELECT * FROM comunarr.keyWord_file WHERE idFile = id AND idKeyWord = ${item})`).join(' AND ');
 };
 
+const prepareFile = (file, reply, connectToDatabase) => {
+     // Set additional/optinal file object information
+    file.timestamp = getTimestamp();
+    file.keyWords = formatKeyWords(file);
+    file = fillOptionalFields(file);
+    file.fileType = getFileExtension(file.file.filename);
 
+    if (file.fileType === null || file.fileType === 'exe')  { 
+        reply(statusMessage.BAD_REQUEST); 
+        return;
+    }
+
+    saveFile(file, connectToDatabase);
+};
+
+const saveFile = (file, connectToDatabase) => {
+    // Define file name
+    let newFileName = `${global.__base}/files/${file.timestamp}_${file.file.filename}`;
+
+     // Save file
+    fileSystem.writeFile(newFileName, file.file.path, error => {
+        if (error) {
+            deleteFile(file.file.path).catch(error => { throw error; });
+            throw error; 
+        }
+        // Delete temp file
+        deleteFile(file.file.path).catch(error => { throw error; });
+        connectToDatabase(file, newFileName);
+    });
+
+};
+
+const deleteFile = fileName => del([fileName]).then( paths => paths );
+
+const getTimestamp = () => (+new Date).toString();
+
+const formatKeyWords = file => ('keyWords' in file) ?  file.keyWords.join(',') : null; 
+
+const fillOptionalFields = file => {
+    ['place', 'relatedDate', 'idSpecificTopic'] .forEach(key => {
+        file[key] = file[key] === undefined ? null : file[key];
+    });
+    return file;
+};
+
+const getFileExtension = filename => {
+    let extension = filename.split('.');
+    return (extension.length < 2 ? null : extension.pop().toLowerCase());
+};
