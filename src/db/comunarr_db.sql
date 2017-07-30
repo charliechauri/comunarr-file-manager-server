@@ -119,7 +119,7 @@ CREATE TABLE `file` (
   CONSTRAINT `idPrivacyType` FOREIGN KEY (`idPrivacyType`) REFERENCES `privacyType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idSpecificTopic` FOREIGN KEY (`idSpecificTopic`) REFERENCES `specificTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idUser` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `fileType` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `keyWord` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +329,7 @@ BEGIN
     THEN 
 		RETURN 1;
 	# The file is visible to the user
-	ELSEIF (SELECT idUserType FROM comunarr.user WHERE id = p_idUser) =
+	ELSEIF (SELECT idUserType FROM comunarr.user WHERE id = p_idUser) <=
 		(SELECT idPrivacyType FROM comunarr.file WHERE id = p_idFile)
 	THEN
 		RETURN 1;
@@ -636,7 +636,7 @@ BEGIN
 		THEN
 			RETURN 0;
 		# Title is not repeated
-		ELSEIF EXISTS(SELECT * FROM comunarr.file WHERE name = TRIM(p_name))
+		ELSEIF EXISTS(SELECT * FROM comunarr.file WHERE name = TRIM(p_name) AND (p_id IS NULL OR (p_id IS NOT NULL AND id != p_id)))
         THEN
 			RETURN 0;
 		# The catalog elements exist
@@ -848,9 +848,9 @@ BEGIN
     IF p_action IN(2, 3) 
     THEN
 		# Required fields
-		IF (p_name IS NULL OR LENGTH(TRIM(p_name)) = 0
+		IF (p_name IS NULL OR LENGTH(TRIM(p_name)) < 4
             OR p_status IS NULL 
-            OR p_userName IS NULL OR LENGTH(TRIM(p_userName)) = 0 OR (p_userName LIKE '% %')
+            OR p_userName IS NULL OR LENGTH(TRIM(p_userName)) < 4 OR (p_userName LIKE '% %')
             OR p_idUserType IS NULL)
 		THEN
 			RETURN 0;
@@ -1599,8 +1599,9 @@ BEGIN
 			AND (p_idCollective IS NULL OR idCollective = p_idCollective)
 			AND (p_idGeneralTopic IS NULL OR idGeneralTopic = p_idGeneralTopic)
 			AND (p_uploadedByMe = 0 OR idUser = p_idUser)
-            AND (SELECT userCanAccessTheFile(p_idUser, id)) = 1;
-            
+            AND (SELECT userCanAccessTheFile(p_idUser, id)) = 1
+            ORDER BY id;
+		
         DECLARE CONTINUE HANDLER FOR
         NOT FOUND SET done = TRUE;    
             
@@ -1773,12 +1774,15 @@ CREATE PROCEDURE `file_update`(
 BEGIN
 
 DECLARE idFileType INT;
+DECLARE old_timestamp VARCHAR(50);
+DECLARE old_fileType VARCHAR(5);
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
 
 START TRANSACTION;
     
+   
 	# Remove blank spaces from string parameters
 	SET p_name = LTRIM(RTRIM(p_name));
 	SET p_author = LTRIM(RTRIM(p_author));
@@ -1793,6 +1797,13 @@ START TRANSACTION;
     
 	ELSE
     
+		# Save old values 
+        SELECT F.timestamp, FT.name
+        INTO old_timestamp, old_fileType
+        FROM comunarr.file AS F
+        INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.id
+        WHERE F.id = p_id;
+        
 		# Assign the file type id
 		SET idFileType = (SELECT id FROM fileType WHERE name = p_fileType);
 		
@@ -1828,6 +1839,9 @@ START TRANSACTION;
         ELSE
             CALL saveKeyWords(p_id, p_arraykeyWords);
 		END IF;
+        
+        # Return old timestamp and file type values
+        SELECT old_timestamp AS 'timestamp', old_fileType AS 'fileType';
         
 		# Return inserted object
 	    SELECT id, name, author, place, relatedDate, idCollective, idComunarrProject, 
@@ -2632,4 +2646,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-26 22:58:51
+-- Dump completed on 2017-07-30  2:13:41

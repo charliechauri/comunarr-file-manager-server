@@ -19,7 +19,9 @@
                 "DATABASE_HOST": "127.0.0.1",
                 "DATABASE_USER": "root",
                 "DATABASE_PASSWORD": "oquesugieres",
-                "DATABASE_SCHEMA": "comunarr"
+                "DATABASE_SCHEMA": "comunarr",
+                "FILES_DIRECTORY" : "files",
+                "TEMP_FILES_DIRECTORY" : "temp-files"
             }
         },
         {
