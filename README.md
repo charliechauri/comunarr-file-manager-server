@@ -28,7 +28,6 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
 * Catalogs
   * Return OK message in all POST or PUT methods
   * Transform status to boolean in all GET that match
-* Delete files - @charliechauri
   * Date filters (1900-01-01 = undefined date)
 * Validate all error messages return the same object
 * Add Google Analytics - @charliechauri
