@@ -25,11 +25,11 @@ module.exports = [
             handler: UserController.POST,
             validate: {
                 payload: {
-                    name: Joi.string().min(4).max(255),
-                    userName: Joi.string().min(4).max(255),
-                    idUserType: Joi.number().min(1).max(3),
-                    password: Joi.string().min(4).max(255),
-                    confirmPassword: Joi.string().min(4).max(255)
+                    name: Joi.string().min(4).max(255).required(),
+                    userName: Joi.string().min(4).max(255).required(),
+                    idUserType: Joi.number().min(1).max(3).required(),
+                    password: Joi.string().min(4).max(255).required(),
+                    confirmPassword: Joi.string().min(4).max(255).required()
                 }
             }
         }
@@ -45,11 +45,11 @@ module.exports = [
             handler: UserController.PUT,
             validate: {
                 payload: {
-                    id: Joi.number().min(1).max(1000000),
-                    name: Joi.string().min(4).max(255),
-                    userName: Joi.string().min(4).max(255),
-                    idUserType: Joi.number().min(1).max(3),
-                    status: Joi.boolean()
+                    id: Joi.number().min(1).max(1000000).required(),
+                    name: Joi.string().min(4).max(255).required(),
+                    userName: Joi.string().min(4).max(255).required(),
+                    idUserType: Joi.number().min(1).max(3).required(),
+                    status: Joi.boolean().required()
                 }
             }
         }

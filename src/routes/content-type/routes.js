@@ -25,7 +25,7 @@ module.exports = [
             handler: ContentTypeController.POST,
             validate: {
                 payload: {
-                    name: Joi.string().min(4).max(255)
+                    name: Joi.string().min(4).max(255).required()
                 }
             }
         }
@@ -41,9 +41,9 @@ module.exports = [
             handler: ContentTypeController.PUT,
             validate: {
                 payload: {
-                    id: Joi.number().min(1).max(100000),
-                    name: Joi.string().min(4).max(255),
-                    status: Joi.boolean()
+                    id: Joi.number().min(1).max(100000).required(),
+                    name: Joi.string().min(4).max(255).required(),
+                    status: Joi.boolean().required()
                 }
             }
         }

@@ -27,7 +27,7 @@ module.exports = (() => {
                 validate: {
                     payload: {
                         idComunarrProject: Joi.array().items(Joi.number().min(1).max(10000)).required(),
-                        name: Joi.string().min(4).max(255)
+                        name: Joi.string().min(4).max(255).required()
                     }
                 }
             }
@@ -43,10 +43,10 @@ module.exports = (() => {
                 handler: CollectiveController.PUT,
                 validate: {
                     payload: {
-                        id: Joi.number().min(1).max(100000),
+                        id: Joi.number().min(1).max(100000).required(),
                         idComunarrProject: Joi.array().items(Joi.number().min(1).max(10000)).required(),
-                        name: Joi.string().min(4).max(255),
-                        status: Joi.boolean()
+                        name: Joi.string().min(4).max(255).required(),
+                        status: Joi.boolean().required()
                     }
                 }
             }

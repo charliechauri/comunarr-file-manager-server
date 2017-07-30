@@ -26,7 +26,7 @@ module.exports = (() => {
                 handler: SpecificTopicController.POST,
                 validate: {
                     payload: {
-                        name: Joi.string().min(4).max(255),
+                        name: Joi.string().min(4).max(255).required(),
                         idGeneralTopic: Joi.array().items(Joi.number().min(1).max(10000)).required()
                     }
                 }
@@ -43,10 +43,10 @@ module.exports = (() => {
                 handler: SpecificTopicController.PUT,
                 validate: {
                     payload: {
-                        id: Joi.number().min(1).max(1000000),
-                        name: Joi.string().min(4).max(255),
+                        id: Joi.number().min(1).max(1000000).required(),
+                        name: Joi.string().min(4).max(255).required(),
                         idGeneralTopic: Joi.array().items(Joi.number().min(1).max(10000)).required(),
-                        status: Joi.boolean()
+                        status: Joi.boolean().required()
                     }
                 }
             }
