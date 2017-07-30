@@ -9,12 +9,16 @@ module.exports = {
         db.getConnection((err, connection) => {
             connection.query('CALL comunarrProject_select', {}, (error, results, fields) => {
                 connection.release();
-                
+
                 if (error) throw error;
 
                 if (results.fieldCount === 0) { reply(statusMessage.NOT_FOUND); }
-                else { reply(results[0]); }
-                    
+                else {
+                    let comunarrProjects = results[0];
+                    comunarrProjects.forEach(item => item.status = !!item.status);
+                    reply(comunarrProjects);
+                }
+
             });
         });
     },
@@ -23,14 +27,18 @@ module.exports = {
         let comunarrProject = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL comunarrProject_insert(?, ?)', [comunarrProject.name, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
+            connection.query('CALL comunarrProject_insert(?, ?)', [comunarrProject.name, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
-                
+
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
-                else { reply(results[0][0]); }
-                    
+                else {
+                    let item = results[0][0];
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
+                }
+
             });
         });
     },
@@ -39,14 +47,18 @@ module.exports = {
         let comunarrProject = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL comunarrProject_update(?, ?, ?, ?)', [comunarrProject.id, comunarrProject.name, comunarrProject.status, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
+            connection.query('CALL comunarrProject_update(?, ?, ?, ?)', [comunarrProject.id, comunarrProject.name, comunarrProject.status, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
-                
+
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
-                else { reply(results[0][0]); }
-                    
+                else {
+                    let item = results[0][0];
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
+                }
+
             });
         });
     }
