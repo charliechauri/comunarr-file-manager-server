@@ -24,7 +24,6 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
 ![Comunarr](./run.gif "Comunarr logo")
 
 ## TODO
-* Update file - @ariherna
 * Download file - @ariherna
 * Catalogs
   * Return OK message in all POST or PUT methods
@@ -32,6 +31,7 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
 * Delete files - @charliechauri
   * Date filters (1900-01-01 = undefined date)
 * Validate all error messages return the same object
+* Add Google Analytics - @charliechauri
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
