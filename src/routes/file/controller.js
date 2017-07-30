@@ -5,6 +5,7 @@ const statusMessage = require(`${global.__base}/src/utils/request-status-message
 const authInfo = require(`${global.__base}/src/utils/auth-information`);
 const del = require('del');
 const copyFile = require('quickly-copy-file');
+const constants = require(`${global.__base}/src/config/constants`);
 
 module.exports = {
     GET: (request, reply) => {
@@ -55,10 +56,9 @@ module.exports = {
                         reply(statusMessage.BAD_REQUEST);
                     }
                     else {
-                        let resultFile = results[0][0];
-                        resultFile.idKeyWord = results[1].map(item => item.idKeyWord);
-
-                        reply(resultFile);
+                        const item = results[0][0];
+                        item.idKeyWord = results[1].map(elem => elem.idKeyWord);
+                        reply({ message: statusMessage.OK, item });
                     }
                 });
             });
@@ -69,24 +69,29 @@ module.exports = {
     PUT: (request, reply) => {
         let file = request.payload;
 
-        file.keyWord = file.keyWord.join(',');
-        file.timestamp = (+new Date).toString();
+        prepareFile(file, reply, (file, newFileName) => {
+            db.getConnection((err, connection) => {
+                connection.query('CALL file_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.id, file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, authInfo.GET_USER_ID(request), file.timestamp, file.keyWord], (error, results, fields) => {
+                    connection.release();
 
-        db.getConnection((err, connection) => {
-            connection.query('CALL file_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.id, file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, authInfo.GET_USER_ID(request), file.timestamp, file.keyWord], (error, results, fields) => {
-                connection.release();
+                    if (error) throw error;
 
-                if (error) throw error;
+                    if (results[0][0].SUCCESS === 0) {
+                        deleteFile(newFileName).catch(error => { throw error; });
+                        reply(statusMessage.BAD_REQUEST);
+                    }
+                    else {
+                        let oldFileInfo = results[0][0];
+                        let item = results[1][0];
+                        item.idKeyWord = results[2].map(elem => elem.idKeyWord);
 
-                if (results[0][0].SUCCESS === 0) {
-                    reply(statusMessage.BAD_REQUEST);
-                }
-                else {
-                    let resultFile = results[0][0];
-                    resultFile.idKeyWord = results[1].map(item => item.idKeyWord);
-                    reply(resultFile);
-                }
+                        // Delete old file
+                        deleteFile(`${global.__base}/${constants.directories.files}/${oldFileInfo.timestamp}.${oldFileInfo.fileType}`).catch(error => { throw error; });
+        
+                        reply({ message: statusMessage.OK, item });
+                    }
 
+                });
             });
         });
     },
@@ -104,7 +109,8 @@ module.exports = {
                     reply(statusMessage.BAD_REQUEST);
                 }
                 else {
-                    reply(results[0][0]);
+                    const item = results[0][0];
+                    reply({ message : statusMessage.OK, item });
                 }
 
             });
@@ -218,7 +224,7 @@ const prepareFile = (file, reply, connectToDatabase) => {
 
 const saveFile = (file, connectToDatabase) => {
     // Define file name
-    let newFileName = `${global.__base}/files/${file.timestamp}.${file.fileType}`;
+    let newFileName = `${global.__base}/${constants.directories.files}/${file.timestamp}.${file.fileType}`;
 
     // Save file
     copyFile(file.file.path, newFileName)
