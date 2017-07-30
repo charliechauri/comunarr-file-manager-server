@@ -10,6 +10,7 @@ const constants = require(`${global.__base}/src/config/constants`);
 module.exports = {
     GET: (request, reply) => {
         const params = request.query;
+        params.uploadedByMe = params.uploadedByMe === true ? 1 : 0;
 
         db.getConnection((err, connection) => {
             connection.query('CALL file_selectSimpleSearch(?, ?, ?, ?, ?, ?, ?)', [params.name, params.author, params.idComunarrProject, params.idCollective, params.idGeneralTopic, params.uploadedByMe, authInfo.GET_USER_ID(request)], (error, results, fields) => {

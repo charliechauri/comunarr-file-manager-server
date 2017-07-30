@@ -14,8 +14,18 @@ module.exports = (() => {
                 auth: {
                     strategy: 'simple',
                     scope: ['user']
-                },                
-                handler: FileController.GET
+                },
+                handler: FileController.GET,
+                validate: {
+                    query: {
+                        name: Joi.string().min(4).max(255),
+                        author: Joi.string().min(4).max(255),
+                        idComunarrProject: Joi.number().integer().min(1).max(10000),
+                        idCollective: Joi.number().integer().min(1).max(10000),
+                        idGeneralTopic: Joi.number().integer().min(1).max(10000),
+                        uploadedByMe: Joi.boolean().required(),
+                    }
+                }
             }
         },
         {
@@ -25,13 +35,13 @@ module.exports = (() => {
                 auth: {
                     strategy: 'simple',
                     scope: ['user']
-                },            
+                },
                 payload: {
                     maxBytes: 209715200,
                     output: 'file',
                     parse: true,
                     uploads: `./${constants.directories.tempFiles}`,
-                    allow: 'multipart/form-data' 
+                    allow: 'multipart/form-data'
                 },
                 validate: {
                     payload: {
@@ -48,7 +58,7 @@ module.exports = (() => {
                         idContentType: Joi.number().integer().min(1).max(100000).required(),
                         keyWords: Joi.array().items(Joi.string().min(4).max(255))
                     }
-                },    
+                },
                 handler: FileController.POST
             }
         },
@@ -59,13 +69,13 @@ module.exports = (() => {
                 auth: {
                     strategy: 'simple',
                     scope: ['user']
-                }, 
-                                payload: {
+                },
+                payload: {
                     maxBytes: 209715200,
                     output: 'file',
                     parse: true,
                     uploads: `./${constants.directories.tempFiles}`,
-                    allow: 'multipart/form-data' 
+                    allow: 'multipart/form-data'
                 },
                 validate: {
                     payload: {
@@ -83,7 +93,7 @@ module.exports = (() => {
                         idContentType: Joi.number().integer().min(1).max(100000).required(),
                         keyWords: Joi.array().items(Joi.string().min(4).max(255))
                     }
-                },                 
+                },
                 handler: FileController.PUT
             }
         },
@@ -94,7 +104,7 @@ module.exports = (() => {
                 auth: {
                     strategy: 'simple',
                     scope: ['user']
-                },                
+                },
                 handler: FileController.DELETE
             }
         },
@@ -105,9 +115,9 @@ module.exports = (() => {
                 auth: {
                     strategy: 'simple',
                     scope: ['user']
-                },                
+                },
                 handler: FileController.POST_SPECIFIC_SEARCH,
-                validate: {                 
+                validate: {
                     payload: {
                         name: Joi.string().min(4).max(255).allow(null),
                         author: Joi.object().keys({
@@ -150,11 +160,11 @@ module.exports = (() => {
                             OR: Joi.array().items(Joi.number().integer().min(1).max(10000)),
                             NOT: Joi.array().items(Joi.number().integer().min(1).max(10000)),
                             AND: Joi.array().items(Joi.number().integer().min(1).max(10000))
-                        }) ,
+                        }),
                         relatedDate: Joi.array().items(JoiExtended.date().format('YYYY-MM-DD')).min(2).max(2),
                         updateDate: Joi.array().items(JoiExtended.date().format('YYYY-MM-DD')).min(2).max(2)
-                     }
-                 }
+                    }
+                }
             }
         },
     ];
