@@ -82,8 +82,8 @@ module.exports = {
                         reply(statusMessage.BAD_REQUEST);
                     }
                     else {
-                        let oldFileInfo = results[0][0];
-                        let item = results[1][0];
+                        const oldFileInfo = results[0][0];
+                        const item = results[1][0];
                         item.idKeyWord = results[2].map(elem => elem.idKeyWord);
 
                         // Delete old file
@@ -110,7 +110,11 @@ module.exports = {
                     reply(statusMessage.BAD_REQUEST);
                 }
                 else {
-                    const item = results[0][0];
+                    const deletedFileInfo = results[0][0];
+                    // Delete file
+                    deleteFile(`${global.__base}/${constants.directories.files}/${deletedFileInfo.timestamp}.${deletedFileInfo.fileType}`).catch(error => { throw error; });
+
+                    const item = results[1][0];
                     reply({ message : statusMessage.OK, item });
                 }
 
