@@ -88,7 +88,7 @@ module.exports = {
 
                         // Delete old file
                         deleteFile(`${global.__base}/${constants.directories.files}/${oldFileInfo.timestamp}.${oldFileInfo.fileType}`).catch(error => { throw error; });
-        
+
                         reply({ message: statusMessage.OK, item });
                     }
 
@@ -115,7 +115,7 @@ module.exports = {
                     deleteFile(`${global.__base}/${constants.directories.files}/${deletedFileInfo.timestamp}.${deletedFileInfo.fileType}`).catch(error => { throw error; });
 
                     const item = results[1][0];
-                    reply({ message : statusMessage.OK, item });
+                    reply({ message: statusMessage.OK, item });
                 }
 
             });
@@ -148,6 +148,29 @@ module.exports = {
                     reply(arrFile);
                 }
 
+            });
+        });
+    },
+
+    GET_FILE: (request, reply) => {
+        let id = encodeURIComponent(request.params.id);
+
+        db.getConnection((err, connection) => {
+            const query = `SELECT F.timestamp, FT.name AS fileType
+                                    FROM comunarr.file AS F 
+                                    INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.Id
+                                    WHERE F.id = ${connection.escape(id)}`;
+
+            connection.query(query, {}, (error, results) => {
+                if (error) throw error;
+
+                if (results.length === 0) {
+                    reply({ message: statusMessage.NOT_FOUND });
+                } else {
+                    const fileName = `${global.__base}/${constants.directories.files}/${results[0].timestamp}.${results[0].fileType}`;
+
+                    reply.file(fileName);
+                }
             });
         });
     }

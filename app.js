@@ -4,6 +4,7 @@ const Hapi = require('hapi');
 const routes = require(`${global.__base}/src/routes/index`);
 const Auth = require(`${global.__base}/src/config/auth`);
 const BasicAuth = require('hapi-auth-basic');
+const Inert = require('inert');
 
 const server = new Hapi.Server();
 
@@ -13,7 +14,7 @@ server.connection({
     routes: { cors: !!process.env.CORS_ENV }
 });
 
-server.register(BasicAuth, err => {
+server.register([BasicAuth, Inert], err => {
     if (err) throw err;
     server.auth.strategy('simple', 'basic', {
         validateFunc: Auth.validate

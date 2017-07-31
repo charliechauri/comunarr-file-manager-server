@@ -167,5 +167,16 @@ module.exports = (() => {
                 }
             }
         },
+        {
+            method: 'GET',
+            path: BASE_PATH.concat('/{id}'),
+            config: {
+                auth: {
+                    strategy: 'simple',
+                    scope: ['user']
+                },
+                handler: FileController.GET_FILE
+            }
+        },
     ];
 })();
