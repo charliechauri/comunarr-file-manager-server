@@ -24,7 +24,6 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
 ![Comunarr](./run.gif "Comunarr logo")
 
 ## TODO
-* Download file - @ariherna
 * Catalogs
   * Return OK message in all POST or PUT methods
   * Transform status to boolean in all GET that match
