@@ -34,7 +34,7 @@ module.exports = {
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
                 else {
-                    const item = results[0][0];
+                    let item = results[0][0];
                     item.status = !!item.status;
                     reply({ message: statusMessage.OK, item });
                 }
@@ -53,7 +53,11 @@ module.exports = {
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
-                else { reply({ message: statusMessage.OK, item: results[0][0] }); }
+                else {
+                    let item = results[0][0];
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
+                }
 
             });
         });

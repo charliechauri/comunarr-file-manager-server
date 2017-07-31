@@ -13,8 +13,12 @@ module.exports = {
                 if (error) throw error;
 
                 if (results.fieldCount === 0) { reply(statusMessage.NOT_FOUND); }
-                else { reply(results[0]); }
-                    
+                else {
+                    let data = results[0];
+                    data.forEach(item => { item.status = !!item.status; });
+                    reply(data);
+                }
+
             });
         });
     },
@@ -25,19 +29,20 @@ module.exports = {
         collective.idComunarrProject = collective.idComunarrProject.join(',');
 
         db.getConnection((err, connection) => {
-            connection.query('CALL collective_insert(?, ?, ?)', [collective.name, collective.idComunarrProject, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
+            connection.query('CALL collective_insert(?, ?, ?)', [collective.name, collective.idComunarrProject, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
-                
+
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) {
                     reply(statusMessage.BAD_REQUEST);
                 }
                 else {
-                    let resultCollective = results[0][0];
-                    resultCollective.idComunarrProject = results[1].map(item => item.idComunarrProject);
+                    let item = results[0][0];
+                    item.status = !!item.status;
+                    item.idComunarrProject = results[1].map(item => item.idComunarrProject);
 
-                    reply(resultCollective);
+                    reply({ message: statusMessage.OK, item });
                 }
 
             });
@@ -52,19 +57,20 @@ module.exports = {
         db.getConnection((err, connection) => {
             connection.query('CALL collective_update(?, ?, ?, ?, ?)', [collective.id, collective.name, collective.idComunarrProject, collective.status, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
-                
+
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) {
                     reply(statusMessage.BAD_REQUEST);
                 }
                 else {
-                    let resultCollective = results[0][0];
-                    resultCollective.idComunarrProject = results[1].map(item => item.idComunarrProject);
+                    let item = results[0][0];
+                    item.status = !!item.status;
+                    item.idComunarrProject = results[1].map(item => item.idComunarrProject);
 
-                    reply(resultCollective);
+                    reply({ message: statusMessage.OK, item });
                 }
-                
+
             });
         });
     }
