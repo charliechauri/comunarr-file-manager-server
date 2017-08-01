@@ -1,8 +1,8 @@
 const Boom = require('boom');
 
 module.exports = {
-    NOT_FOUND: Boom.notFound('No results found.'),
-    UNAUTHORIZED: Boom.unauthorized('You have not permission to access this resource.'),
-    BAD_REQUEST: Boom.badRequest('The element could not be created/updated/deleted.'),
+    NOT_FOUND: Boom.notFound('No se encontraron resultados'),
+    UNAUTHORIZED: Boom.unauthorized('No tienes permisos para consultar este recurso'),
+    BAD_REQUEST: Boom.badRequest('No se pudo completar la acción solicitada'),
     OK: 'La información se actualizó correctamente'
 };
