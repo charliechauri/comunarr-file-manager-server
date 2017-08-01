@@ -155,7 +155,7 @@ module.exports = {
         let id = encodeURIComponent(request.params.id);
 
         db.getConnection((err, connection) => {
-            const query = `SELECT F.timestamp, FT.name AS fileType
+            const query = `SELECT F.name AS fileName, F.timestamp, FT.name AS fileType
                                     FROM comunarr.file AS F 
                                     INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.Id
                                     WHERE F.id = ${connection.escape(id)}`;
@@ -168,8 +168,9 @@ module.exports = {
                 } else {
                     const fileName = `${global.__base}/${constants.directories.files}/${results[0].timestamp}.${results[0].fileType}`;
 
-                    reply.file(fileName);
+                    reply.file(fileName, { filename: `${results[0].fileName}.${results[0].fileType}`, mode: 'attachment' });
                 }
+                
             });
         });
     }
