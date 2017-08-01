@@ -13,8 +13,12 @@ module.exports = {
                 if (error) throw error;
 
                 if (results.fieldCount === 0) { reply(statusMessage.NOT_FOUND); }
-                else { reply(results[0]); }
-                
+                else {
+                    let contentType = results[0];
+                    contentType.forEach(item => item.status = !!item.status);
+                    reply(contentType);
+                }
+
             });
         });
     },
@@ -23,13 +27,17 @@ module.exports = {
         let contentType = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL contentType_insert(?, ?)', [contentType.name, authInfo.GET_USER_ID(request)], (error, results, fields) => { 
+            connection.query('CALL contentType_insert(?, ?)', [contentType.name, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
 
                 if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
-                else { reply(results[0][0]); }
+                else {
+                    let item = results[0][0];
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
+                }
 
             });
         });
@@ -39,13 +47,17 @@ module.exports = {
         let contentType = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL contentType_update(?, ?, ?, ?)', [contentType.id, contentType.name, contentType.status, ], (error, results, fields) => { authInfo.GET_USER_ID(request)
+            connection.query('CALL contentType_update(?, ?, ?, ?)', [contentType.id, contentType.name, contentType.status,], (error, results, fields) => {
                 connection.release();
 
-                 if (error) throw error;
+                if (error) throw error;
 
                 if (results[0][0].SUCCESS === 0) { reply(statusMessage.BAD_REQUEST); }
-                else { reply(results[0][0]); }
+                else {
+                    let item = results[0][0];
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
+                }
 
             });
         });

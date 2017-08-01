@@ -13,7 +13,11 @@ module.exports = {
                 if (error) throw error;
 
                 if (results.fieldCount === 0) { reply(statusMessage.NOT_FOUND); }
-                else { reply(results[0]); }
+                else {
+                    let specificTopic = results[0];
+                    specificTopic.forEach(item => item.status = !!item.status);
+                    reply(specificTopic);
+                }
                     
             });
         });
@@ -34,10 +38,10 @@ module.exports = {
                     reply(statusMessage.BAD_REQUEST);
                 }
                 else {
-                    let resultSpecificTopic = results[0][0];
-                    resultSpecificTopic.idGeneralTopic = results[1].map(item => item.idGeneralTopic);
-
-                    reply(resultSpecificTopic);
+                    let item = results[0][0];
+                    item.idGeneralTopic = results[1].map(elem => elem.idGeneralTopic);
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
                 }
 
             });
@@ -59,10 +63,10 @@ module.exports = {
                     reply(statusMessage.BAD_REQUEST);
                 }
                 else {
-                    let resultSpecificTopic = results[0][0];
-                    resultSpecificTopic.idGeneralTopic = results[1].map(item => item.idGeneralTopic);
-
-                    reply(resultSpecificTopic);
+                    let item = results[0][0];
+                    item.idGeneralTopic = results[1].map(elem => elem.idGeneralTopic);
+                    item.status = !!item.status;
+                    reply({ message: statusMessage.OK, item });
                 }
 
             });
