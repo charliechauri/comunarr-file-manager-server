@@ -47,7 +47,7 @@ module.exports = {
         let contentType = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL contentType_update(?, ?, ?, ?)', [contentType.id, contentType.name, contentType.status,], (error, results, fields) => {
+            connection.query('CALL contentType_update(?, ?, ?, ?)', [contentType.id, contentType.name, contentType.status, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
 
                 if (error) throw error;
