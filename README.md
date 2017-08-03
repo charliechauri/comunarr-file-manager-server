@@ -27,7 +27,6 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
 * Catalogs
   * Date filters (1900-01-01 = undefined date)
 * Add Google Analytics - @charliechauri
-* Rename files when downloaded
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
