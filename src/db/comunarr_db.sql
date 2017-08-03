@@ -119,7 +119,7 @@ CREATE TABLE `file` (
   CONSTRAINT `idPrivacyType` FOREIGN KEY (`idPrivacyType`) REFERENCES `privacyType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idSpecificTopic` FOREIGN KEY (`idSpecificTopic`) REFERENCES `specificTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idUser` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +244,7 @@ CREATE TABLE `user` (
   `idUserType` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_userType_idx` (`idUserType`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -448,6 +448,7 @@ BEGIN
 		LEFT OUTER JOIN comunarr.comunarrProject 
 		ON (temporaryIdTable.id = comunarr.comunarrProject.id)
 		WHERE comunarr.comunarrProject.id IS NULL
+        OR comunarr.comunarrProject.status = 0
 	) THEN RETURN 0;
     
 	ELSE RETURN 1;
@@ -782,6 +783,7 @@ BEGIN
 		LEFT OUTER JOIN comunarr.generalTopic 
 		ON (temporaryIdTable.id = comunarr.generalTopic.id)
 		WHERE comunarr.generalTopic.id IS NULL
+        OR comunarr.generalTopic.status = 0
 	) THEN RETURN 0;
     
 	ELSE RETURN 1;
@@ -935,15 +937,9 @@ DELIMITER ;;
 CREATE PROCEDURE `collective_comunarrProject_select`()
 BEGIN
 
-DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
-DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
-
-START TRANSACTION;
-
-  SELECT idCollective, idComunarrProject
-  FROM collective_comunarrProject;
-  
-COMMIT;  
+	SELECT idCollective, idComunarrProject
+	FROM collective_comunarrProject AS CC
+	INNER JOIN comunarr.comunarrProject AS C ON CC.idComunarrProject = C.id AND C.status = 1;
 
 END ;;
 DELIMITER ;
@@ -1381,6 +1377,9 @@ CREATE PROCEDURE `file_delete`(
 )
 BEGIN
 
+DECLARE timestamp VARCHAR(50);
+DECLARE fileType VARCHAR(5);
+
 DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
 
@@ -1394,12 +1393,23 @@ START TRANSACTION;
     
 	ELSE
     
+		# Save values 
+        SELECT F.timestamp, FT.name
+        INTO timestamp, fileType
+        FROM comunarr.file AS F
+        INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.id
+        WHERE F.id = p_id;
+    
 		# Delete the file's key words relations
         DELETE FROM comunarr.keyWord_file WHERE idFile = p_id;
         
         # Delete the file register
         DELETE FROM comunarr.file WHERE id = p_id;
         
+        # Select deleted values
+        SELECT timestamp, fileType;
+        
+        # Select deleted file id
         SELECT p_id AS 'id';
         
     END IF;
@@ -2172,8 +2182,9 @@ DELIMITER ;;
 CREATE PROCEDURE `specificTopic_generalTopic_select`()
 BEGIN
 
-  SELECT idSpecificTopic, idGeneralTopic
-  FROM specificTopic_generalTopic;
+	SELECT idSpecificTopic,idGeneralTopic
+	FROM specificTopic_generalTopic AS SG
+	INNER JOIN comunarr.generalTopic AS G ON SG.idGeneralTopic = G.id AND G.status = 1;
   
 END ;;
 DELIMITER ;
@@ -2622,7 +2633,7 @@ START TRANSACTION;
 		
         UPDATE comunarr.user SET 
 			password = p_newPassword
-		WHERE id = p_id;
+        WHERE id = p_id;
         
         SELECT 1 AS 'SUCCESS';
         
@@ -2646,4 +2657,5 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-30  2:13:41
+-- Dump completed on 2017-08-02 23:09:34
+
