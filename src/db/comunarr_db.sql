@@ -448,7 +448,6 @@ BEGIN
 		LEFT OUTER JOIN comunarr.comunarrProject 
 		ON (temporaryIdTable.id = comunarr.comunarrProject.id)
 		WHERE comunarr.comunarrProject.id IS NULL
-        OR comunarr.comunarrProject.status = 0
 	) THEN RETURN 0;
     
 	ELSE RETURN 1;
@@ -783,7 +782,6 @@ BEGIN
 		LEFT OUTER JOIN comunarr.generalTopic 
 		ON (temporaryIdTable.id = comunarr.generalTopic.id)
 		WHERE comunarr.generalTopic.id IS NULL
-        OR comunarr.generalTopic.status = 0
 	) THEN RETURN 0;
     
 	ELSE RETURN 1;
