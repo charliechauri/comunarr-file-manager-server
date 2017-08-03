@@ -21,7 +21,7 @@
 
 LOCK TABLES `collective` WRITE;
 /*!40000 ALTER TABLE `collective` DISABLE KEYS */;
-INSERT INTO `collective` VALUES (1,'Licenciatura',1),(2,'Bachillerato',1),(3,'Maestria',1),(4,'Repechique',1),(5,'Collectivo prueba SIIII',1),(6,'rootanatl',1),(7,'Mujeres artesanas',1),(8,'Mujeres artesanas II',1),(9,'Mujeres artesanas III',1),(10,'Mujeres artesanas IV',1),(11,'Mujeres artesanas V',1),(12,'Mujeres artesanas VI',1),(13,'Mujeres artesanas VII',1),(14,'Mujeres artesanas VIII',1),(15,'Mujeres artesanas IX',1),(16,'Mujeres ARTESANAAAS X',1);
+INSERT INTO `collective` VALUES (1,'Licenciatura',0),(2,'Bachillerato',1),(3,'Maestría',1),(4,'Repechique',1),(5,'Collectivo prueba SIIII',1),(6,'rootanatl',1),(7,'Mujeres artesanas',1),(8,'Mujeres artesanas II',1),(9,'Mujeres artesanas III',1),(10,'Mujeres artesanas IV',1),(11,'Mujeres artesanas V',1),(12,'Mujeres artesanas VI',1),(13,'Mujeres artesanas VII',1),(14,'Mujeres artesanas VIII',0),(15,'Mujeres artesanas IX',1),(16,'Mujeres ARTESANAAAS X',1);
 /*!40000 ALTER TABLE `collective` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -31,7 +31,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `collective_comunarrProject` WRITE;
 /*!40000 ALTER TABLE `collective_comunarrProject` DISABLE KEYS */;
-INSERT INTO `collective_comunarrProject` VALUES (5,2),(3,1),(3,2),(6,1),(6,2),(6,3),(1,3),(2,3),(4,3),(7,1),(8,1),(8,2),(9,1),(9,2),(10,1),(10,2),(11,1),(11,2),(12,1),(12,2),(13,1),(13,2),(14,1),(14,2),(15,1),(15,2),(16,1),(16,3);
+INSERT INTO `collective_comunarrProject` VALUES (5,2),(6,1),(6,2),(6,3),(2,3),(4,3),(7,1),(8,1),(8,2),(10,1),(10,2),(11,1),(11,2),(12,1),(12,2),(15,1),(15,2),(16,1),(16,3),(1,3),(3,1),(3,2),(9,1),(9,2),(13,1),(13,2),(13,3),(14,1),(14,2);
 /*!40000 ALTER TABLE `collective_comunarrProject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -41,7 +41,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `comunarrProject` WRITE;
 /*!40000 ALTER TABLE `comunarrProject` DISABLE KEYS */;
-INSERT INTO `comunarrProject` VALUES (1,'Programa de aprendizaje',1),(2,'Red de economia solidroota',1),(3,'Red del maiz',1),(10,'prueba',1),(12,'prueba MODIFICADA',1),(13,'Projecto que da error',1),(14,'Projecto Y',1);
+INSERT INTO `comunarrProject` VALUES (1,'Programa de aprendizaje',1),(2,'Red de economia solidaria',1),(3,'Red del maiz',1),(10,'prueba',1),(12,'Proyecto dado de baja',0),(13,'Projecto que da error',1),(14,'Projecto Y',1);
 /*!40000 ALTER TABLE `comunarrProject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +61,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `file` WRITE;
 /*!40000 ALTER TABLE `file` DISABLE KEYS */;
-INSERT INTO `file` VALUES (4,'Archivo 1','ITESO','Jalisco',NULL,3,2,1,7,1,2,2,'2017-07-05',2,'2017-07-05 01:53:57'),(5,'PROFECTAR 2017','SINE','Creel',NULL,3,2,1,7,2,2,2,'2017-07-10',2,'2017-07-10 06:09:40'),(6,'Archivo desde app con date default','ITESO','Jalisco',NULL,6,3,1,6,3,4,6,'2017-07-17',1,'124234230'),(8,'Archivo nuevo','Ariana',NULL,NULL,5,2,1,NULL,3,2,1,'2017-07-25',2,'1501020479450'),(9,'Archivo desde la app','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-25',2,'1501032441676'),(10,'Archivo desde la app Renombre','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-25',2,'1501039894106'),(11,'Archivo desde la app Eliminación','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-25',2,'1501044966924');
+INSERT INTO `file` VALUES (4,'Archivo 1','ITESO','Jalisco',NULL,3,2,1,7,1,2,2,'2017-07-05',2,'2017-07-05 01:53:57'),(5,'PROFECTAR 2017','SINE','Creel',NULL,3,2,1,7,2,2,2,'2017-07-10',2,'2017-07-10 06:09:40'),(6,'Archivo desde app con date default','ITESO','Jalisco',NULL,6,3,1,6,3,4,6,'2017-07-17',1,'124234230'),(8,'Archivo nuevo','Ariana',NULL,NULL,5,2,1,NULL,3,2,1,'2017-07-25',2,'1501020479450'),(9,'Archivo desde la app','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-25',2,'1501032441676'),(10,'Archivo desde la app Renombre','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-25',2,'1501039894106'),(11,'Archivo desde la app Eliminación','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-25',2,'1501044966924'),(12,'Archivo desde la app callback','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-26',2,'1501129330382'),(14,'Copia de archivo II','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-27',2,'1501133813398'),(15,'Copia de archivo III','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-27',2,'1501134164401'),(16,'Copia de archivo A','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-27',2,'1501134372912'),(17,'Copia de archivo B PRUEBA','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-28',2,'1501219155749'),(18,'Copia de archivo ERROR','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-27',2,'1501213891678'),(19,'Imagen desde app','Ariana',NULL,NULL,5,2,1,NULL,3,2,8,'2017-07-27',2,'1501214131711'),(20,'Imagen desde app TIMESTAMP','Ariana',NULL,NULL,5,2,1,NULL,3,2,8,'2017-07-27',2,'1501214391845'),(23,'Descargable con espacios!','Ariana',NULL,NULL,5,2,1,NULL,3,2,7,'2017-07-30',2,'1501474427540'),(24,'Prueba actualización','Ariana',NULL,NULL,5,2,1,NULL,3,2,1,'2017-08-01',2,'1501617852918');
 /*!40000 ALTER TABLE `file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,7 +71,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `fileType` WRITE;
 /*!40000 ALTER TABLE `fileType` DISABLE KEYS */;
-INSERT INTO `fileType` VALUES (1,'PDF'),(2,'PPT'),(3,'docx'),(6,'txt'),(7,'sql');
+INSERT INTO `fileType` VALUES (1,'pdf'),(2,'ppt'),(3,'docx'),(6,'txt'),(7,'sql'),(8,'png'),(9,'mp4');
 /*!40000 ALTER TABLE `fileType` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +81,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `generalTopic` WRITE;
 /*!40000 ALTER TABLE `generalTopic` DISABLE KEYS */;
-INSERT INTO `generalTopic` VALUES (1,'Educacion',1),(2,'Gestion del conocimiento',1),(3,'Defensa del bosque',1),(4,'Tema general',1),(5,'Tema general II',1);
+INSERT INTO `generalTopic` VALUES (1,'Educación',1),(2,'Gestión del conocimiento',0),(3,'Defensa del bosque',1),(4,'Tema general',1),(5,'Tema general II',1);
 /*!40000 ALTER TABLE `generalTopic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +91,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `keyWord` WRITE;
 /*!40000 ALTER TABLE `keyWord` DISABLE KEYS */;
-INSERT INTO `keyWord` VALUES (1,'sierra'),(2,'educacion'),(3,'raramuri'),(4,'mineria'),(5,'finanzas'),(6,'bosque'),(8,'comunidades'),(9,'solidrootdad'),(14,'3'),(15,'6'),(16,'1'),(17,'terreno'),(18,'mina'),(20,'dulces'),(21,'cerro'),(22,'casa');
+INSERT INTO `keyWord` VALUES (1,'sierra'),(2,'educacion'),(3,'raramuri'),(4,'mineria'),(5,'finanzas'),(6,'bosque'),(8,'comunidades'),(9,'solidrootdad'),(14,'3'),(15,'6'),(16,'1'),(17,'terreno'),(18,'mina'),(20,'dulces'),(21,'cerro'),(22,'casa'),(23,'palabra');
 /*!40000 ALTER TABLE `keyWord` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -101,7 +101,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `keyWord_file` WRITE;
 /*!40000 ALTER TABLE `keyWord_file` DISABLE KEYS */;
-INSERT INTO `keyWord_file` VALUES (8,4),(9,4),(11,5),(12,5),(20,6),(21,8),(22,8),(21,9),(22,9),(21,10),(22,10),(21,11),(22,11);
+INSERT INTO `keyWord_file` VALUES (8,4),(9,4),(11,5),(12,5),(20,6),(21,8),(22,8),(21,9),(22,9),(21,10),(22,10),(21,11),(22,11),(21,12),(22,12),(21,14),(22,14),(21,15),(22,15),(21,16),(22,16),(21,18),(22,18),(21,19),(22,19),(21,20),(22,20);
 /*!40000 ALTER TABLE `keyWord_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +121,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `specificTopic` WRITE;
 /*!40000 ALTER TABLE `specificTopic` DISABLE KEYS */;
-INSERT INTO `specificTopic` VALUES (1,'Explotacion de bosques',1),(3,'Cuidado del bosque',1),(6,'Autonomia',1),(7,'Tareas',1),(8,'Tema específico ejemplo',1),(9,'Tema específico ejemplo II',1);
+INSERT INTO `specificTopic` VALUES (1,'Explotacion de bosques',1),(3,'Cuidado del bosque',1),(6,'Autonomia',1),(7,'Tareas',0),(8,'Tema específico ejemplo',1),(9,'Tema específico ejemplo II',1);
 /*!40000 ALTER TABLE `specificTopic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +141,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Óscar González','Temp1234',1,'ogonzale',1),(2,'rootaa','1111',1,'rootherna',2),(3,'Charli','1234',1,'cechauri',3),(4,'Gerardo','1234',1,'gmora',3),(5,'ARIIIII','12345',0,'arian',2);
+INSERT INTO `user` VALUES (1,'Óscar González','1111',1,'ogonzale',1),(2,'Ariana','gera',1,'ariherna',2),(3,'Charli','1234',1,'cechauri',3),(4,'Gerardo','1234',1,'gmora',3),(5,'ARIIIII','12345',0,'arian',2),(7,'Gaby Urenda','gaby',1,'aurenda',2);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,4 +174,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-26 22:55:01
+-- Dump completed on 2017-08-02 23:10:21
