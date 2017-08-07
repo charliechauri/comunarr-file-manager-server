@@ -12,7 +12,7 @@ module.exports = {
         params.uploadedByMe = params.uploadedByMe === true ? 1 : 0;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL file_selectSimpleSearch(?, ?, ?, ?, ?, ?, ?)', [params.name, params.author, params.idComunarrProject, params.idCollective, params.idGeneralTopic, params.uploadedByMe, authInfo.GET_USER_ID(request)], (error, results, fields) => {
+            connection.query('CALL file_selectSimpleSearch(?, ?, ?, ?, ?, ?, ?)', [params.name, params.author, params.idComunarrProject, params.idCollective, params.idGeneralTopic, params.uploadedByMe, authInfo.GET_USER_ID(request)], (error, results) => {
                 connection.release();
 
                 if (error) throw error;
@@ -20,9 +20,9 @@ module.exports = {
                 if (results.fieldCount === 0) {
                     reply(statusMessage.NOT_FOUND);
                 } else {
-                    let resultsSet = results.slice(0, -1);
-                    let arrLen = resultsSet.length;
-                    let arrFile = [];
+                    let resultsSet = results.slice(0, -1),
+                        arrLen = resultsSet.length,
+                        arrFile = [];
 
                     for (let index = 0; index < arrLen; index++) {
                         let file = resultsSet[index][0];
@@ -168,9 +168,12 @@ module.exports = {
                 } else {
                     const fileName = `${global.__base}/${constants.directories.files}/${results[0].timestamp}.${results[0].fileType}`;
 
-                    reply.file(fileName, { filename: `${results[0].fileName}.${results[0].fileType}`, mode: 'attachment' });
+                    reply
+                        .file(fileName, { filename: `${results[0].fileName}.${results[0].fileType}`, mode: 'attachment' })
+                        .header('Access-Control-Expose-Headers', 'X-filename, content-disposition')
+                        .header('X-filename', `${results[0].fileName}.${results[0].fileType}`);
                 }
-                
+
             });
         });
     }

@@ -49,7 +49,7 @@ module.exports = (() => {
                         name: Joi.string().min(4).max(255).required(),
                         author: Joi.string().min(4).max(255).required(),
                         place: Joi.string().min(4).max(255),
-                        relatedDate: JoiExtended.date().format('YYYY-MM-DD'),
+                        relatedDate: JoiExtended.date().format(['YYYY-MM-DD']),
                         idCollective: Joi.number().integer().min(1).max(100000).required(),
                         idComunarrProject: Joi.number().integer().min(1).max(100000).required(),
                         idGeneralTopic: Joi.number().integer().min(1).max(100000).required(),
@@ -84,7 +84,7 @@ module.exports = (() => {
                         name: Joi.string().min(4).max(255).required(),
                         author: Joi.string().min(4).max(255).required(),
                         place: Joi.string().min(4).max(255),
-                        relatedDate: JoiExtended.date().format('YYYY-MM-DD'),
+                        relatedDate: JoiExtended.date().format(['YYYY-MM-DD']),
                         idCollective: Joi.number().integer().min(1).max(100000).required(),
                         idComunarrProject: Joi.number().integer().min(1).max(100000).required(),
                         idGeneralTopic: Joi.number().integer().min(1).max(100000).required(),
@@ -161,8 +161,8 @@ module.exports = (() => {
                             NOT: Joi.array().items(Joi.number().integer().min(1).max(10000)),
                             AND: Joi.array().items(Joi.number().integer().min(1).max(10000))
                         }),
-                        relatedDate: Joi.array().items(JoiExtended.date().format('YYYY-MM-DD')).min(2).max(2),
-                        updateDate: Joi.array().items(JoiExtended.date().format('YYYY-MM-DD')).min(2).max(2)
+                        relatedDate: Joi.array().items(JoiExtended.date().format(['YYYY-MM-DD'])).min(2).max(2),
+                        updateDate: Joi.array().items(JoiExtended.date().format(['YYYY-MM-DD'])).min(2).max(2)
                     }
                 }
             }
