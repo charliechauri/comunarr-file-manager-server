@@ -168,7 +168,10 @@ module.exports = {
                 } else {
                     const fileName = `${global.__base}/${constants.directories.files}/${results[0].timestamp}.${results[0].fileType}`;
 
-                    reply.file(fileName, { filename: `${results[0].fileName}.${results[0].fileType}`, mode: 'attachment' });
+                    reply
+                        .file(fileName, { filename: `${results[0].fileName}.${results[0].fileType}`, mode: 'attachment' })
+                        .header('Access-Control-Expose-Headers', 'X-filename, content-disposition')
+                        .header('X-filename', `${results[0].fileName}.${results[0].fileType}`);
                 }
 
             });
