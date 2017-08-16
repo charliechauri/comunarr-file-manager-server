@@ -100,7 +100,10 @@ const deleteFile = fileName => del([fileName]).then(paths => paths);
 
 const getTimestamp = () => (+new Date).toString();
 
-const formatKeyWords = file => ('keyWords' in file) ? file.keyWords.join(',') : null;
+const formatKeyWords = file => {
+    if (!('keyWords' in file)) { return null; }
+    return (file.keyWords.constructor === Array) ? file.keyWords .join(','): file.keyWords;
+};
 
 const fillOptionalFields = file => {
     ['place', 'relatedDate', 'idSpecificTopic'].forEach(key => {

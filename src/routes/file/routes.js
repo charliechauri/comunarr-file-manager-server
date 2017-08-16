@@ -56,7 +56,7 @@ module.exports = (() => {
                         idSpecificTopic: Joi.number().integer().min(1).max(100000),
                         idPrivacyType: Joi.number().integer().min(1).max(100000).required(),
                         idContentType: Joi.number().integer().min(1).max(100000).required(),
-                        keyWords: Joi.array().items(Joi.string().min(4).max(255))
+                        keyWords: Joi.alternatives(Joi.string().min(4).max(255), Joi.array().items(Joi.string().min(4).max(255)))
                     }
                 },
                 handler: FileController.POST
@@ -91,7 +91,7 @@ module.exports = (() => {
                         idSpecificTopic: Joi.number().integer().min(1).max(100000),
                         idPrivacyType: Joi.number().integer().min(1).max(100000).required(),
                         idContentType: Joi.number().integer().min(1).max(100000).required(),
-                        keyWords: Joi.array().items(Joi.string().min(4).max(255))
+                        keyWords: Joi.alternatives(Joi.string().min(4).max(255), Joi.array().items(Joi.string().min(4).max(255)))
                     }
                 },
                 handler: FileController.PUT
