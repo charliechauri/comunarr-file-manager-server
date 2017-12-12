@@ -12,7 +12,8 @@
     "joi": "^10.6.0",
     "joi-date-extensions": "^1.0.2",
     "mysql": "^2.13.0",
-    "quickly-copy-file": "^1.0.0"
+    "quickly-copy-file": "^1.0.0",
+    "comunarr-file-manager-client": "https://github.com/charliechauri/comunarr-file-manager-client.git"
   },
   "devDependencies": {
     "eslint": "^4.2.0",
