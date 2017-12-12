@@ -60,3 +60,5 @@ typings/
 # Files
 temp-files
 files
+!temp-files/README.md
+!files/README.md
