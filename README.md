@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* You need to have installed at least node's 6.9.5 and a mysql server
+* You need to have installed node's 6.9.5 version and a mysql server
 * Is necessary to have a mysql server, to create the db, run the ```src/database/comunarr_db.sql``` into your sql client's editor
 
 ## Installing
