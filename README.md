@@ -10,7 +10,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* You need to have installed node's 6.9.5 version and a mysql server
+* You need to have installed node's 6.9.5 version. We recommend you to use [nvm](https://github.com/creationix/nvm) for managing different node versions in MacOS. For Windows users there are two alternatives:
+    * [nvm-windows](https://github.com/coreybutler/nvm-windows)
+    * [nodist](https://github.com/marcelklehr/nodist)
 * Is necessary to have a mysql server, to create the db, run the ```src/database/comunarr_db.sql``` into your sql client's editor
 
 ## Installing
@@ -23,10 +25,23 @@ It is preferred to run the project on [VSCode](https://code.visualstudio.com/) t
 
 ![Comunarr](./run.gif "Comunarr logo")
 
-## TODO
+
+## Deploy
+
+```
+// Update project dependencies
+npm install
+
+// Start application with the following command, specify the correct parameters
+DATABASE_HOST={x.x.x.x} DATABASE_USER={user} DATABASE_PASSWORD={pass} DATABASE_SCHEMA={db_name} FILES_DIRECTORY={files_directory_name} TEMP_FILES_DIRECTORY={temp-files-directory-name} node app.js
+
+```
+
+## @TODO
 * Catalogs
   * Date filters (1900-01-01 = undefined date)
 * Add Google Analytics - @charliechauri
+* Add size calculator
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
