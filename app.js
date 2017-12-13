@@ -14,16 +14,6 @@ server.connection({
     routes: { cors: !!process.env.CORS_ENV }
 });
 
-server.route({
-    method: 'GET',
-    path: `${__dirname}/node_modules/comunarr-file-manager/dist/{file*}`,
-    handler: {
-        directory: {
-            path: '/'
-        }
-    }
-});
-
 server.register([BasicAuth, Inert], err => {
     if (err) throw err;
     server.auth.strategy('simple', 'basic', {
