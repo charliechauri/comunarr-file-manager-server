@@ -73,27 +73,31 @@ module.exports = {
             db.getConnection((err, connection) => {
                 connection.query('CALL file_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [file.id, file.name, file.author, file.place, file.relatedDate, file.idCollective, file.idComunarrProject, file.idGeneralTopic, file.idSpecificTopic, file.idPrivacyType, file.idContentType, file.fileType, authInfo.GET_USER_ID(request), file.timestamp, file.keyWords], (error, results, fields) => {
                     connection.release();
-                    
+
                     if (error) throw error;
 
                     if (results[0][0].SUCCESS === 0) {
-                        fileUtility.deleteFile(newFileName).catch(error => { throw error; });
+                        if (file.file) {
+                            fileUtility.deleteFile(newFileName).catch(error => { throw error; });
+                        }
                         reply(statusMessage.BAD_REQUEST);
                     }
                     else {
-                        const oldFileInfo = results[0][0];
                         const item = results[1][0];
                         item.idKeyWord = results[2].map(elem => elem.idKeyWord);
 
                         // Delete old file
-                        fileUtility.deleteFile(`${global.__base}/${constants.directories.files}/${oldFileInfo.timestamp}.${oldFileInfo.fileType}`).catch(error => { throw error; });
+                        const oldFileInfo = results[0][0];
+                        if (file.file) {
+                            fileUtility.deleteFile(`${global.__base}/${constants.directories.files}/${oldFileInfo.timestamp}.${oldFileInfo.fileType}`).catch(error => { throw error; });
+                        }
 
                         reply({ message: statusMessage.OK, item });
                     }
 
                 });
             });
-        });
+        }, 1); // Indicates that the file is been updated
     },
 
     DELETE: (request, reply) => {

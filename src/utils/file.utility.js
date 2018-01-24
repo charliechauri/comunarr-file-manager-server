@@ -62,11 +62,17 @@ const formatKeyWordANDFilters = array => {
     return array.map(item => `EXISTS (SELECT * FROM comunarr.keyWord_file WHERE idFile = id AND idKeyWord = ${item})`).join(' AND ');
 };
 
-const prepareFile = (file, reply, connectToDatabase) => {
+const prepareFile = (file, reply, connectToDatabase, isUpdate) => {
     // Set additional/optinal file object information
-    file.timestamp = getTimestamp();
     file.keyWords = formatKeyWords(file);
     file = fillOptionalFields(file);
+
+    if(isUpdate === 1 && !file.file){
+        connectToDatabase(file, file.name);
+        return;
+    }
+    
+    file.timestamp = getTimestamp();
     file.fileType = getFileExtension(file.file.filename);
 
     if (file.fileType === null || file.fileType === 'exe') {

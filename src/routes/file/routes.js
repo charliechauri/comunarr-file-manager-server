@@ -79,9 +79,11 @@ module.exports = (() => {
                 },
                 validate: {
                     payload: {
-                        file: Joi.any().required(),
+                        file: Joi.any(),
                         id: Joi.number().integer().min(1).required(),
                         name: Joi.string().min(4).max(255).required(),
+                        fileType: Joi.string().min(1).max(255).required(),
+                        timestamp: Joi.string().min(1).max(255).required(),
                         author: Joi.string().min(4).max(255).required(),
                         place: Joi.string().min(4).max(255),
                         relatedDate: JoiExtended.date().format(['YYYY-MM-DD']),
