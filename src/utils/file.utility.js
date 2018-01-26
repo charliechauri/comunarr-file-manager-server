@@ -72,6 +72,7 @@ const prepareFile = (file, reply, connectToDatabase, isUpdate) => {
         return;
     }
     
+    file.size = file.file.bytes;
     file.timestamp = getTimestamp();
     file.fileType = getFileExtension(file.file.filename);
 
