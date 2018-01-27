@@ -13,7 +13,7 @@ module.exports = {
 
                 if (error) throw error;
 
-                if (results.fieldCount === 0) { reply(statusMessage.NOT_FOUND); }
+                if (results[0].length === 0) { reply(statusMessage.NOT_FOUND); }
                 else {
                     results[0].forEach(item => item.status = !!item.status);
                     reply(results[0]);
