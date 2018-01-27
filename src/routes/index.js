@@ -10,6 +10,7 @@ const keyWordRoutes = require(`${global.__base}/src/routes/key-word/routes`);
 const userRoutes = require(`${global.__base}/src/routes/user/routes`);
 const fileRoutes = require(`${global.__base}/src/routes/file/routes`);
 const loginRoutes = require(`${global.__base}/src/routes/login/routes`);
+const institutionRoutes = require(`${global.__base}/src/routes/institution/routes`);
 
 let routes = [];
 
@@ -25,5 +26,6 @@ routes = routes.concat(keyWordRoutes);
 routes = routes.concat(userRoutes);
 routes = routes.concat(fileRoutes);
 routes = routes.concat(loginRoutes);
+routes = routes.concat(institutionRoutes);
 
 module.exports = routes;
