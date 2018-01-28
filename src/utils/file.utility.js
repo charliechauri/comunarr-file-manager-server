@@ -48,7 +48,9 @@ const formatORIntegerFilters = (param, array) => `${param} IN (`.concat(array.jo
 
 const formatNOTIntegerFilters = (param, array) => `${param} NOT IN (`.concat(array.join(',')).concat(')');
 
-const formatDateFilters = (param, array) => `${param} BETWEEN "${array[0]}" AND "${array[1]}"`;
+const formatDateFilters = (param, array) => `${param} BETWEEN "${formatDate(array[0])}" AND "${formatDate(array[1])}"`;
+
+const formatDate = param => param.toISOString().substring(0,10);
 
 const formatKeyWordORFilters = array => {
     return '('.concat(array.map(item => `EXISTS (SELECT * FROM comunarr.keyWord_file WHERE idFile = id AND idKeyWord = ${item})`).join(' OR ')).concat(')');
