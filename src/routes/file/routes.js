@@ -122,7 +122,7 @@ module.exports = (() => {
                 handler: FileController.POST_SPECIFIC_SEARCH,
                 validate: {
                     payload: {
-                        name: Joi.string().min(4).max(255).allow(null),
+                        name: Joi.string().min(4).max(255),
                         author: Joi.object().keys({
                             OR: Joi.array().items(Joi.string().min(4).max(255).optional()),
                             NOT: Joi.array().items(Joi.string().min(4).max(255).optional())
