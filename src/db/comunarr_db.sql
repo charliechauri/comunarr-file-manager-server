@@ -1801,7 +1801,7 @@ START TRANSACTION;
     
     get_file: LOOP
 		FETCH file_cursor INTO idFile;
-		
+
 		IF done  
 		THEN
 			LEAVE get_file;
@@ -1820,7 +1820,7 @@ START TRANSACTION;
 		INNER JOIN comunarr.collective AS C ON F.idCollective = C.id
 		INNER JOIN comunarr.comunarrProject AS CP ON F.idComunarrProject = CP.id
 		INNER JOIN comunarr.generalTopic AS GT ON F.idGeneralTopic = GT.id
-		INNER JOIN comunarr.specificTopic AS ST ON F.idSpecificTopic = ST.id
+		LEFT JOIN comunarr.specificTopic AS ST ON F.idSpecificTopic = ST.id
 		INNER JOIN comunarr.privacyType AS PT ON F.idPrivacyType = PT.id
 		INNER JOIN comunarr.contentType AS CT ON F.idContentType = CT.id
 		INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.id
@@ -2873,7 +2873,8 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-27 21:14:35
+-- Dump completed on 2018-01-28  0:35:02
+
 
 /*DEFAULT DATA*/
 /*Default institution*/
