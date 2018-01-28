@@ -37,11 +37,10 @@ DATABASE_HOST={x.x.x.x} DATABASE_USER={user} DATABASE_PASSWORD={pass} DATABASE_S
 
 ```
 
-## @TODO
-* Catalogs
-  * Date filters (1900-01-01 = undefined date)
-* Add Google Analytics - @charliechauri
-* Add size calculator
+## Login 
+// Default user:
+User: comunarr
+password: comunarr
 
 ## Built with 💚 and the following excellent projects:
 * [Hapi.js](https://hapijs.com/) - Web framework
