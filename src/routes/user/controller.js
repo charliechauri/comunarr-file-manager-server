@@ -27,7 +27,7 @@ module.exports = {
         let user = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL user_insert(?, ?, ?, ?, ?)', [user.name, user.password, user.userName, user.idUserType, authInfo.GET_USER_ID(request)], (error, results, fields) => {
+            connection.query('CALL user_insert(?, ?, ?, ?, ?, ?)', [user.name, user.password, user.userName, user.idUserType, user.idInstitution, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
 
                 if (error) throw error;
@@ -47,7 +47,7 @@ module.exports = {
         let user = request.payload;
 
         db.getConnection((err, connection) => {
-            connection.query('CALL user_update(?, ?, ?, ?, ?, ?)', [user.id, user.name, user.status, user.userName, user.idUserType, authInfo.GET_USER_ID(request)], (error, results, fields) => {
+            connection.query('CALL user_update(?, ?, ?, ?, ?, ?, ?)', [user.id, user.name, user.status, user.userName, user.idUserType, user.idInstitution, authInfo.GET_USER_ID(request)], (error, results, fields) => {
                 connection.release();
 
                 if (error) throw error;

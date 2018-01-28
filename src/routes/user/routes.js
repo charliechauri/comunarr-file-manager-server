@@ -28,6 +28,7 @@ module.exports = [
                     name: Joi.string().min(4).max(255).required(),
                     userName: Joi.string().min(4).max(255).required(),
                     idUserType: Joi.number().min(1).max(3).required(),
+                    idInstitution: Joi.number().min(1).required(),
                     password: Joi.string().min(4).max(255).required(),
                     confirmPassword: Joi.string().min(4).max(255).required()
                 }
@@ -49,6 +50,7 @@ module.exports = [
                     name: Joi.string().min(4).max(255).required(),
                     userName: Joi.string().min(4).max(255).required(),
                     idUserType: Joi.number().min(1).max(3).required(),
+                    idInstitution: Joi.number().min(1).required(),
                     status: Joi.boolean().required()
                 }
             }
