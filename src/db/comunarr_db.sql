@@ -29,7 +29,7 @@ CREATE TABLE `collective` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `comunarrProject` (
   `name` varchar(255) NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `contentType` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,6 +102,7 @@ CREATE TABLE `file` (
   `updateDate` date NOT NULL,
   `idUser` int(11) NOT NULL,
   `timestamp` varchar(50) NOT NULL,
+  `size` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idCollective_idx` (`idCollective`),
   KEY `idComunarrProject_idx` (`idComunarrProject`),
@@ -119,7 +120,7 @@ CREATE TABLE `file` (
   CONSTRAINT `idPrivacyType` FOREIGN KEY (`idPrivacyType`) REFERENCES `privacyType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idSpecificTopic` FOREIGN KEY (`idSpecificTopic`) REFERENCES `specificTopic` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `idUser` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +134,7 @@ CREATE TABLE `fileType` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +149,22 @@ CREATE TABLE `generalTopic` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `institution`
+--
+
+DROP TABLE IF EXISTS `institution`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `institution` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +178,7 @@ CREATE TABLE `keyWord` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,7 +224,7 @@ CREATE TABLE `specificTopic` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -241,10 +257,13 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `userName` varchar(255) NOT NULL,
-  `idUserType` tinyint(1) DEFAULT NULL,
+  `idUserType` tinyint(1) NOT NULL,
+  `idInstitution` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_userType_idx` (`idUserType`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  KEY `user_userType_idx` (`idUserType`),
+  KEY `user_ibfk_1` (`idInstitution`),
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`idInstitution`) REFERENCES `institution` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,7 +435,7 @@ CREATE FUNCTION `validateCollective`(
 BEGIN
 
 	# Validate:
-    # The collective is related to comunarr project's
+    # The collective is related to comunarr projects
 	IF NOT EXISTS (SELECT * FROM temporaryIdTable) 
     THEN 
 		RETURN 0;
@@ -448,6 +467,16 @@ BEGIN
 		LEFT OUTER JOIN comunarr.comunarrProject 
 		ON (temporaryIdTable.id = comunarr.comunarrProject.id)
 		WHERE comunarr.comunarrProject.id IS NULL
+	) THEN RETURN 0;
+
+	# The collective is related with at least one comunarr project with active status
+    ELSEIF NOT EXISTS
+    (
+		SELECT * 
+        FROM temporaryIdTable 
+		LEFT OUTER JOIN comunarr.comunarrProject 
+		ON (temporaryIdTable.id = comunarr.comunarrProject.id)
+		WHERE comunarr.comunarrProject.status = 1
 	) THEN RETURN 0;
     
 	ELSE RETURN 1;
@@ -656,7 +685,7 @@ BEGIN
         ELSEIF TRIM(p_fileType) = 'exe'
         THEN
 			RETURN 0;
-		# The dependient catalog's elements exist
+		# The dependient catalogs elements exist
 		ELSEIF p_idCollective IS NOT NULL
 			AND (NOT EXISTS(SELECT * FROM comunarr.collective WHERE id = p_idCollective AND status = 1)
             OR NOT EXISTS(SELECT * FROM comunarr.collective_comunarrProject WHERE idCollective = p_idCollective AND idComunarrProject = p_idComunarrProject))
@@ -729,6 +758,53 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `validateInstitution` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE FUNCTION `validateInstitution`(
+	p_id INT,
+    p_name VARCHAR(255),
+    p_idUser INT
+) RETURNS tinyint(1)
+BEGIN
+
+	# Validate:
+    # The user is admin
+    IF (SELECT userIsAdmin(p_idUser)) = 0
+	THEN 
+		RETURN 0;
+        
+	# Values length
+    ELSEIF LENGTH(TRIM(p_name)) = 0 
+    THEN
+		RETURN 0;
+    
+	# The institution is not repeated
+    ELSEIF EXISTS
+    (
+		SELECT * 
+        FROM comunarr.institution 
+        WHERE UPPER(name) = UPPER(p_name) 
+        AND (p_id IS NULL OR (p_id IS NOT NULL AND id != p_id))
+	) THEN RETURN 0;
+
+	ELSE RETURN 1;
+    
+	END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `validateSpecificTopic` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -784,6 +860,16 @@ BEGIN
 		WHERE comunarr.generalTopic.id IS NULL
 	) THEN RETURN 0;
     
+	# The specific topic is related with at least one general topic with active status
+    ELSEIF NOT EXISTS
+    (
+		SELECT * 
+        FROM   temporaryIdTable 
+		LEFT OUTER JOIN comunarr.generalTopic 
+		ON (temporaryIdTable.id = comunarr.generalTopic.id)
+		WHERE comunarr.generalTopic.status = 1
+	) THEN RETURN 0;
+    
 	ELSE RETURN 1;
     
 	END IF;
@@ -811,6 +897,7 @@ CREATE FUNCTION `validateUser`(
     p_status TINYINT(1),
     p_userName VARCHAR(255),
     p_idUserType INT(11),
+    p_idInstitution INT,
     p_idUser INT,
     p_action TINYINT # 1 - SELECT, 2 - INSERT, 3 - UPDATE, 4 - DELETE
     
@@ -851,11 +938,16 @@ BEGIN
 		IF (p_name IS NULL OR LENGTH(TRIM(p_name)) < 4
             OR p_status IS NULL 
             OR p_userName IS NULL OR LENGTH(TRIM(p_userName)) < 4 OR (p_userName LIKE '% %')
-            OR p_idUserType IS NULL)
+            OR p_idUserType IS NULL
+            OR p_idInstitution IS NULL)
 		THEN
 			RETURN 0;
 		# The user name is not repeated
         ELSEIF EXISTS(SELECT * FROM comunarr.user WHERE userName = TRIM(p_userName) AND (p_id IS NULL OR id != p_id))
+        THEN
+			RETURN 0;
+		# IdInstitution exists
+        ELSEIF NOT EXISTS(SELECT * FROM comunarr.institution WHERE id = p_idInstitution AND status = 1)
         THEN
 			RETURN 0;
 		# IdUserType is valid
@@ -893,13 +985,13 @@ CREATE FUNCTION `validateUserPassword`(
 ) RETURNS tinyint(1)
 BEGIN
 
-	# The user is the password's owner or the admin
+	# The user is the passwords owner or the admin
     IF (p_id != p_idUser) AND (SELECT userIsAdmin(p_idUser)) = 0
     THEN
 		RETURN 0;
 	END IF;
     
-    # If the user is the password's owner
+    # If the user is the passwords owner
     IF (p_id = p_idUser) 
     THEN
 		# The actual password is correct
@@ -1038,7 +1130,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `collective_update`(
 	IN p_id INT,
@@ -1069,7 +1161,7 @@ START TRANSACTION;
 	  WHERE id = p_id;
   
 	 DELETE 
-     FROM collective_comunarrProject 
+     FROM comunarr.collective_comunarrProject 
      WHERE idCollective = p_id;
   
 	 INSERT INTO collective_comunarrProject (idCollective, idComunarrProject)
@@ -1398,7 +1490,7 @@ START TRANSACTION;
         INNER JOIN comunarr.fileType AS FT ON F.idFileType = FT.id
         WHERE F.id = p_id;
     
-		# Delete the file's key words relations
+		# Delete the files key words relations
         DELETE FROM comunarr.keyWord_file WHERE idFile = p_id;
         
         # Delete the file register
@@ -1444,7 +1536,8 @@ CREATE PROCEDURE `file_insert`(
     IN p_fileType VARCHAR(5), 
     IN p_idUser INT,
     IN p_timestamp VARCHAR(50),
-    IN p_arraykeyWords VARCHAR(1000)
+    IN p_arraykeyWords VARCHAR(1000),
+    IN p_size INT
 )
 BEGIN
 
@@ -1482,9 +1575,9 @@ START TRANSACTION;
         
         # Insert the file information
         INSERT INTO comunarr.file (name, author, place, relatedDate, idCollective, idComunarrProject, idGeneralTopic, 
-			idSpecificTopic, idPrivacyType, idContentType, idFileType, updateDate, idUser, timestamp)
+			idSpecificTopic, idPrivacyType, idContentType, idFileType, updateDate, idUser, timestamp, size)
         VALUES (p_name, p_author, p_place, p_relatedDate, p_idCollective, p_idComunarrProject, p_idGeneralTopic, 
-			p_idSpecificTopic, p_idPrivacyType, p_idContentType, idFileType, CURDATE(), p_idUser, p_timestamp);
+			p_idSpecificTopic, p_idPrivacyType, p_idContentType, idFileType, CURDATE(), p_idUser, p_timestamp, p_size);
         
         # Insert key words
 		IF p_arrayKeyWords IS NOT NULL 
@@ -1499,7 +1592,7 @@ START TRANSACTION;
 		# Return inserted object
 	    SELECT id, name, author, place, relatedDate, idCollective, idComunarrProject, 
 			idGeneralTopic, idSpecificTopic, idPrivacyType, idContentType, idFileType, 
-            updateDate, idUser, timestamp
+            updateDate, idUser, timestamp, size
 	    FROM comunarr.file
 	    WHERE id = insertedId;
 	  
@@ -1545,7 +1638,7 @@ BEGIN
             F.idPrivacyType, PT.name AS 'privacyType',
             F.idContentType, CT.name AS 'contentType',
             FT.name AS 'fileType', F.updateDate, U.name AS 'uploadedBy',
-            F.idUser
+            F.idUser, F.timestamp, F.size
         FROM comunarr.file AS F
         INNER JOIN comunarr.collective AS C ON F.idCollective = C.id
         INNER JOIN comunarr.comunarrProject AS CP ON F.idComunarrProject = CP.id
@@ -1632,7 +1725,7 @@ BEGIN
             F.idPrivacyType, PT.name AS 'privacyType',
             F.idContentType, CT.name AS 'contentType',
             FT.name AS 'fileType', F.updateDate, U.name AS 'uploadedBy',
-            F.idUser
+            F.idUser, F.timestamp, F.size
 			FROM comunarr.file AS F
 			INNER JOIN comunarr.collective AS C ON F.idCollective = C.id
 			INNER JOIN comunarr.comunarrProject AS CP ON F.idComunarrProject = CP.id
@@ -1722,7 +1815,7 @@ START TRANSACTION;
 		F.idPrivacyType, PT.name AS 'privacyType',
 		F.idContentType, CT.name AS 'contentType',
 		FT.name AS 'fileType', F.updateDate, U.name AS 'uploadedBy',
-		F.idUser
+		F.idUser, F.timestamp, F.size
 		FROM comunarr.file AS F
 		INNER JOIN comunarr.collective AS C ON F.idCollective = C.id
 		INNER JOIN comunarr.comunarrProject AS CP ON F.idComunarrProject = CP.id
@@ -1777,7 +1870,8 @@ CREATE PROCEDURE `file_update`(
     IN p_fileType VARCHAR(5), 
     IN p_idUser INT,
     IN p_timestamp VARCHAR(50),
-    IN p_arraykeyWords VARCHAR(1000)
+    IN p_arraykeyWords VARCHAR(1000),
+    IN p_size INT
 )
 BEGIN
 
@@ -1837,7 +1931,8 @@ START TRANSACTION;
             idFileType = idFileType, 
             updateDate = CURDATE(), 
             idUser = p_idUser, 
-            timestamp = p_timestamp
+            timestamp = p_timestamp,
+            size = p_size
 		WHERE id = p_id;
         
         # Update key words
@@ -1854,7 +1949,7 @@ START TRANSACTION;
 		# Return inserted object
 	    SELECT id, name, author, place, relatedDate, idCollective, idComunarrProject, 
 			idGeneralTopic, idSpecificTopic, idPrivacyType, idContentType, idFileType, 
-            updateDate, idUser, timestamp
+            updateDate, idUser, timestamp, size
 	    FROM comunarr.file
 	    WHERE id = p_id;
 	  
@@ -1992,6 +2087,126 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `institution_insert` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `institution_insert`(
+	IN p_name VARCHAR(255),
+    IN p_idUser INT
+)
+BEGIN
+
+DECLARE insertedId INT;
+ 
+DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
+
+START TRANSACTION;
+
+  IF (SELECT validateInstitution (NULL, p_name, p_idUser)) = 0 
+
+	 THEN SELECT 0 AS 'SUCCESS';
+    
+  ELSE
+    
+	  INSERT INTO comunarr.institution (name)
+	  VALUES (p_name);
+      
+	  SET insertedId = LAST_INSERT_ID();
+
+      # Return inserted object
+	  SELECT id, name, status
+      FROM comunarr.institution
+      WHERE id = insertedId;
+  
+  END IF;
+  
+COMMIT;
+  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `institution_select` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `institution_select`()
+BEGIN
+
+  SELECT id, name, status
+  FROM comunarr.institution;
+  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `institution_update` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `institution_update`(
+	IN p_id INT,
+	IN p_name VARCHAR(255),
+    IN p_status BOOL,
+    IN p_idUser INT
+)
+BEGIN
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
+
+START TRANSACTION;
+
+  IF (SELECT validateInstitution (p_id, p_name, p_idUser)) = 0 
+
+	 THEN SELECT 0 AS 'SUCCESS';
+    
+  ELSE
+
+	  UPDATE comunarr.institution SET 
+			name = p_name,
+			status = p_status
+	  WHERE id = p_id;
+  
+	  # Return updated object
+	  SELECT id, name, status
+      FROM comunarr.institution
+      WHERE id = p_id;
+      
+  END IF;  
+  
+COMMIT;  
+  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `keyWord_insert` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2000,7 +2215,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `keyWord_insert`(
 	IN p_idFile INT,
@@ -2026,7 +2241,7 @@ BEGIN
 		  LEFT JOIN comunarr.keyWord  AS K ON T.stringValue = K.name
 		  WHERE id IS NULL;
 		  
-		  # Select the key word's ids
+		  # Select the key words ids
 		  INSERT INTO temporaryIdTable (id)
 		  SELECT Id
 		  FROM temporaryStringTable AS T
@@ -2137,7 +2352,7 @@ START TRANSACTION;
 		  LEFT JOIN comunarr.keyWord  AS K ON T.stringValue = K.name
 		  WHERE id IS NULL;
 		  
-		  # Select the key word's ids
+		  # Select the key words ids
 		  INSERT INTO temporaryIdTable (id)
 		  SELECT Id
 		  FROM temporaryStringTable AS T
@@ -2281,7 +2496,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `specificTopic_update`(
 	IN p_id INT,
@@ -2479,13 +2694,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `user_insert`(
 	IN p_name VARCHAR(255),
     IN p_password VARCHAR(255),
     IN p_userName VARCHAR(255),
     IN p_idUserType INT(11),
+    IN p_idInstitution INT,
     IN p_idUser INT
 )
 BEGIN
@@ -2497,20 +2713,20 @@ DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
 
 START TRANSACTION;
 
-	IF (SELECT validateUser(NULL, p_name, p_password, TRUE, p_userName, p_idUserType, p_idUser, 2)) = 0
+	IF (SELECT validateUser(NULL, p_name, p_password, TRUE, p_userName, p_idUserType, p_idInstitution, p_idUser, 2)) = 0
     THEN
     
 		SELECT 0 AS 'SUCCESS';
         
 	ELSE
 		
-		INSERT INTO comunarr.user (name, password, status, userName, idUserType)
-        VALUES (p_name, p_password, 1, p_userName, p_idUserType);
+		INSERT INTO comunarr.user (name, password, status, userName, idUserType, idInstitution)
+        VALUES (p_name, p_password, 1, p_userName, p_idUserType, p_idInstitution);
         
 		SET insertedId = LAST_INSERT_ID();
         
         # Return inserted object
-        SELECT id, name, status, userName, idUserType
+        SELECT id, name, status, userName, idUserType, idInstitution
         FROM comunarr.user
         WHERE id = insertedId;
 		
@@ -2537,7 +2753,7 @@ DELIMITER ;;
 CREATE PROCEDURE `user_select`()
 BEGIN
 
-	SELECT id, name, status, userName, idUserType
+	SELECT id, name, status, userName, idUserType, idInstitution
     FROM comunarr.user;
 
 END ;;
@@ -2554,7 +2770,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `user_update`(
 	IN p_id INT,
@@ -2562,6 +2778,7 @@ CREATE PROCEDURE `user_update`(
     IN p_status TINYINT(1),
     IN p_userName VARCHAR(255),
     IN p_idUserType INT(11),
+    IN p_idInstitution INT,
     IN p_idUser INT
 )
 BEGIN
@@ -2571,7 +2788,7 @@ DECLARE EXIT HANDLER FOR SQLWARNING ROLLBACK;
 
 START TRANSACTION;
 
-	IF (SELECT validateUser(p_id, p_name, NULL, p_status, p_userName, p_idUserType, p_idUser, 3)) = 0
+	IF (SELECT validateUser(p_id, p_name, NULL, p_status, p_userName, p_idUserType, p_idInstitution, p_idUser, 3)) = 0
     THEN
     
 		SELECT 0 AS 'SUCCESS';
@@ -2582,11 +2799,12 @@ START TRANSACTION;
 			name = p_name,
             status = p_status,
             userName = p_userName,
-            idUserType = p_idUserType
+            idUserType = p_idUserType,
+            idInstitution = p_idInstitution
 		WHERE id = p_id;
 			
         # Return updated object
-        SELECT id, name, status, userName, idUserType
+        SELECT id, name, status, userName, idUserType, idInstitution
         FROM comunarr.user
         WHERE id = p_id;
 		
@@ -2631,7 +2849,7 @@ START TRANSACTION;
 		
         UPDATE comunarr.user SET 
 			password = p_newPassword
-        WHERE id = p_id;
+		WHERE id = p_id;
         
         SELECT 1 AS 'SUCCESS';
         
@@ -2655,5 +2873,24 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-08-02 23:09:34
+-- Dump completed on 2018-01-27 21:14:35
+
+/*DEFAULT DATA*/
+/*Default institution*/
+INSERT INTO `institution` (`id`, `name`, `status`) VALUES (`1`, `SINÉ-COMUNARR`, `1`);
+
+/*User types*/
+INSERT INTO `userType` (`Id`,`Nombre`) VALUES (1,'Administrador');
+INSERT INTO `userType` (`Id`,`Nombre`) VALUES (2,'Miembro de equipo');
+INSERT INTO `userType` (`Id`,`Nombre`) VALUES (3,'Usuario');
+
+/*Admin user*/
+INSERT INTO `user` (`id`,`name`,`password`,`status`,`userName`,`idUserType`,`idInstitution`) VALUES (1,'SINÉ-COMUNARR','comunarr',1,'comunarr',1,1);
+
+/*Privacy type*/
+INSERT INTO `privacyType` (`id`,`name`) VALUES (1,'Sólo yo');
+INSERT INTO `privacyType` (`id`,`name`) VALUES (2,'Miembros del equipo');
+INSERT INTO `privacyType` (`id`,`name`) VALUES (3,'Todos');
+
+
 
