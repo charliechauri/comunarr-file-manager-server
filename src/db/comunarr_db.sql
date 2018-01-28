@@ -2877,7 +2877,7 @@ DELIMITER ;
 
 /*DEFAULT DATA*/
 /*Default institution*/
-INSERT INTO `institution` (`id`, `name`, `status`) VALUES (`1`, `SINÉ-COMUNARR`, `1`);
+INSERT INTO `institution` (`id`, `name`, `status`) VALUES (1, 'SINÉ-COMUNARR', 1);
 
 /*User types*/
 INSERT INTO `userType` (`Id`,`Nombre`) VALUES (1,'Administrador');
