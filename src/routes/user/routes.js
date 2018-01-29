@@ -9,7 +9,7 @@ module.exports = [
         config: {
             auth: {
                 strategy: 'simple',
-                scope: ['admin']
+                scope: ['user']
             },
             handler: UserController.GET
         }
