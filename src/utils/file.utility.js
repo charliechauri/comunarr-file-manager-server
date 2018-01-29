@@ -1,7 +1,16 @@
 const del = require('del');
+const diskspace = require('diskspace');
 const copyFile = require('quickly-copy-file');
 const constants = require(`${global.__base}/src/config/constants`);
 const statusMessage = require(`${global.__base}/src/utils/request-status-message`);
+
+const checkSpace = size => {
+    return new Promise(resolve => {
+        diskspace.check('/', (error, result) => {
+            resolve({ isEnoughSpace: result.free > (size * 2), freeSpace: result.free });
+        });
+    });
+};
 
 const generateQuery = obj => {
     let arrFilters = [];
@@ -50,7 +59,7 @@ const formatNOTIntegerFilters = (param, array) => `${param} NOT IN (`.concat(arr
 
 const formatDateFilters = (param, array) => `${param} BETWEEN "${formatDate(array[0])}" AND "${formatDate(array[1])}"`;
 
-const formatDate = param => param.toISOString().substring(0,10);
+const formatDate = param => param.toISOString().substring(0, 10);
 
 const formatKeyWordORFilters = array => {
     return '('.concat(array.map(item => `EXISTS (SELECT * FROM comunarr.keyWord_file WHERE idFile = id AND idKeyWord = ${item})`).join(' OR ')).concat(')');
@@ -69,11 +78,11 @@ const prepareFile = (file, reply, connectToDatabase, isUpdate) => {
     file.keyWords = formatKeyWords(file);
     file = fillOptionalFields(file);
 
-    if(isUpdate === 1 && !file.file){
+    if (isUpdate === 1 && !file.file) {
         connectToDatabase(file, file.name);
         return;
     }
-    
+
     file.size = file.file.bytes;
     file.timestamp = getTimestamp();
     file.fileType = getFileExtension(file.file.filename);
@@ -111,7 +120,7 @@ const getTimestamp = () => (+new Date).toString();
 
 const formatKeyWords = file => {
     if (!('keyWords' in file)) { return null; }
-    return (file.keyWords.constructor === Array) ? file.keyWords .join(','): file.keyWords;
+    return (file.keyWords.constructor === Array) ? file.keyWords.join(',') : file.keyWords;
 };
 
 const fillOptionalFields = file => {
@@ -129,5 +138,6 @@ const getFileExtension = filename => {
 module.exports = {
     generateQuery,
     prepareFile,
-    deleteFile
+    deleteFile,
+    checkSpace
 };
