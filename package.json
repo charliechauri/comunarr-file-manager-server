@@ -5,15 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "boom": "^5.1.0",
+    "comunarr-file-manager-client": "https://github.com/charliechauri/comunarr-file-manager-client.git",
     "del": "^3.0.0",
+    "diskspace": "^2.0.0",
     "hapi": "^16.4.3",
     "hapi-auth-basic": "^4.2.0",
     "inert": "^4.2.1",
     "joi": "^10.6.0",
     "joi-date-extensions": "^1.0.2",
     "mysql": "^2.13.0",
-    "quickly-copy-file": "^1.0.0",
-    "comunarr-file-manager-client": "https://github.com/charliechauri/comunarr-file-manager-client.git"
+    "quickly-copy-file": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^4.2.0",
