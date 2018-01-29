@@ -4,7 +4,7 @@ const copyFile = require('quickly-copy-file');
 const constants = require(`${global.__base}/src/config/constants`);
 const statusMessage = require(`${global.__base}/src/utils/request-status-message`);
 
-const checkSpace = size => {
+const checkSpace = (size = 0) => {
     return new Promise(resolve => {
         diskspace.check('/', (error, result) => {
             resolve({ isEnoughSpace: result.free > (size * 2), freeSpace: result.free });
